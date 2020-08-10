@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <!--表格样式可无视-->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/> -->
+
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/layui.css">
+    <script src="../../lib/jquery.js"></script>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background: #ddd;
+        }
+
+        .headbox {
+            width: 100%;
+            height: 80px;
+            background: #017efd;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="headbox"></div>
+
+    <div class="panel" style="position: relative;">
+        <div id="treeBox"></div>
+        <div id="iconList">
+            <ul>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-01.png">
+                    <span>十二封灯箱</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-02.png">
+                    <span>街区图（十二封）</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-03.png">
+                    <span>运营宣传（十二封）</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-04.png">
+                    <span>资讯、向导</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-05.png">
+                    <span>六封灯箱</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-06.png">
+                    <span>超级灯箱</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-07.png">
+                    <span>梯眉灯箱</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-08.png">
+                    <span>柱子</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-09.png">
+                    <span>梯牌</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-10.png">
+                    <span>闸机站</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-11.png">
+                    <span>梯眉</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-12.png">
+                    <span>梯眉侧</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-13.png">
+                    <span>玻璃围挡</span>
+                </li>
+                <li class="showMark">
+                    <img src="../../image/icon/icon-14.png">
+                    <span>楼梯/电梯</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-15.png">
+                     <span>售票亭</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-16.png">
+                     <span>售票机</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-17.png">
+                     <span>墙贴</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-18.png">
+                     <span>充值机</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-19.png">
+                     <span>车辆操控室</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-20.png">
+                     <span>龙骨架</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-21.png">
+                     <span>ATM取款机</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-22.png">
+                     <span>站立式贴</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-23.png">
+                     <span>地铁公安（十二封）</span>
+                </li>
+                <li class="showMark">
+                     <img src="../../image/icon/icon-24.png">
+                     <span>顺德团委（十二封）</span>
+                </li>
+            </ul>
+        </div>
+        <div id="container">
+            <img src="../../image/cad.jpg">
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../../lib/lip-zoom-mark-jquery.js"></script>
+    <script type="text/javascript">
+
+        // 初始化组件
+        var myobj = $('#container').ZoomMark({
+            'markColor': 'blue',
+            'afterMark': addRowToTabel
+        });
+
+
+        // 添加完标记回调
+        function addRowToTabel(marks) {
+            // $(".mark").oncontextmenu(function(){
+            //     alert(123);
+            // })
+            console.log(marks);
+        }
+
+        // 删除标记
+        function deleteMark(id) {
+            $('#container').ZoomMark('deleteMark', id);
+        }
+
+        $(".showMark").mousedown(function () {
+            $('#container').ZoomMark("setAddState", true);
+        })
+
+        // 初始化底图缩放比例
+        function initZoom(scale, x, y) {
+            $('#container').ZoomMark("zoom", scale, x, y);
+        }
+
+        // 获取底图及标记数据
+        function getZoomMarkData() {
+            return $('#container').ZoomMark("getZoomMarkData");
+        }
+
+        // 初始化底图状态(只调用一次)
+        function initMapState() {
+            // 缩放底图
+            $('#container').ZoomMark('changeSettings', {
+                imgPosition: {
+                    height: 3825,
+                    rotate: 0,
+                    scale: 8,
+                    width: 6800,
+                    x: -2764,
+                    y: -1647.5
+                }
+            });
+            // 绘制标点
+            $('#container').ZoomMark('setMarkList', [
+                {
+                    x: 496,
+                    y: 305
+                },
+                {
+                    x: 490,
+                    y: 420
+                }
+            ])
+            // 校准
+            initZoom(1);
+        }
+
+
+
+
+    </script>
+    <script src="../../layui.js"></script>
+    <script src="./mapMark.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>广佛地铁附属资源资产管理系统</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/layui.css">
+</head>
+
+<body>
+    <div class="login-top">
+        <div class="left"></div>
+        <div class="right">
+            <form class="layui-form login-form" target="_blank">
+                <img src="../image/login-login.png" alt="">
+                <h3>欢&ensp;迎&ensp;登&ensp;录</h3>
+                <div class="layadmin-user-login-box layadmin-user-login-body layui-form" style="padding-top: 50px;">
+                    <div class="layui-form-item" style="text-align: left;">
+                        <label>用户名</label>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-username"
+                            for="LAY-user-login-username"></label>
+                        <input type="text" name="username" id="LAY-user-login-username" lay-verify="required"
+                            placeholder="用户名" class="layui-input">
+                    </div>
+                    <div class="layui-form-item" style="text-align: left;">
+                        <label>密码</label>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-password"
+                            for="LAY-user-login-password"></label>
+                        <input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
+                            placeholder="密码" class="layui-input">
+                    </div>
+                    <div class="layui-form-item" style="padding-top: 50px; padding-left: 120px;">
+                        <button class="login-subBtn layui-btn" id="loginSubmit"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="login-bottom">
+        欢迎登录广佛地铁附属资源资产管理系统
+    </div>
+</body>
+<script src="../lib/jquery.js"></script>
+<script>
+      $("#loginSubmit").click(function(){
+          location.href = "./menu.html";
+      })
+</script>
+</html>

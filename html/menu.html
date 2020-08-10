@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>广佛地铁附属资源资产管理系统</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/layui.css">
+    <script src="../lib/jquery.js"></script>
+</head>
+
+<body>
+    <div class="menu-page">
+        <ul class="menu-box">
+            <li id="assetMenu">
+                <img src="../image/menu-asset.png" alt="">
+                <div class="menu-name">资产台账查询</div>
+            </li>
+            <li id="stationMenu">
+                <img src="../image/menu-station.png" alt="">
+                <div class="menu-name">站厅信息维护</div>
+            </li>
+            <li id="markMenu">
+                <img src="../image/menu-mark.png" alt="">
+                <div class="menu-name">站厅资产标注</div>
+            </li>
+            <li id="statisticsMenu">
+                <img src="../image/menu-analysis.png" alt="">
+                <div class="menu-name">资产统计分析</div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+
+    $("#assetMenu").click(function(){
+        location.href = "./frame.html?menu=asset"
+    })
+
+    $("#stationMenu").click(function(){
+        location.href = "./frame.html?menu=station"
+    })
+
+    $("#markMenu").click(function(){
+        location.href = "./frame.html?menu=mark"
+    })
+
+    $("#statisticsMenu").click(function(){
+        location.href = "./frame.html?menu=statistics"
+    })
+
+</script>
+</html>
