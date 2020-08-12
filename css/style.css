@@ -116,11 +116,14 @@ ul,li{list-style: none;}
 .frame_main{
 	width: 100%;
 	min-height: 500px;
+	height: 100%;
 }
 
 .panel{
 	width: 1360px;
 	margin: 0px auto;
+	/* height: 1500px;
+	background: red; */
 }
 
 .panel #treeBox {
@@ -189,6 +192,46 @@ ul,li{list-style: none;}
 	width: 400px;
 }
 
+.icon-01 {
+	width: 40px;
+    height: 40px;
+    position: absolute;
+	transform: translate(-50%, -50%);
+	background: url("../image/icon/icon-01.png");
+    text-align: center;
+	line-height: 40px;
+	background-size:100% 100%;
+	color: #fff;
+}
+
+.icon-02 {
+	width: 40px;
+    height: 40px;
+    position: absolute;
+	transform: translate(-50%, -50%);
+	background: url("../image/icon/icon-02.png");
+    text-align: center;
+	line-height: 40px;
+	background-size:100% 100%;
+	color: #fff;
+}
+
+
+.icon-03 {
+	width: 40px;
+    height: 40px;
+    position: absolute;
+	transform: translate(-50%, -50%);
+	background: url("../image/icon/icon-03.png");
+    text-align: center;
+	line-height: 40px;
+	background-size:100% 100%;
+	color: #fff;
+}
+
+
+
+
 .panel .operMenu {
 	width: 90px;
 	/* height: 30px; */
@@ -196,7 +239,8 @@ ul,li{list-style: none;}
 	position: absolute;
 	cursor: pointer;
 	display: none;
-	background: red;
+	background: #fff;
+	border: 1px #ddd solid;
 }
 
 .panel .operMenu li {
@@ -296,20 +340,11 @@ vertical-align: middle!important;
 	font-size: 10px;
 	z-index: 999;
 }
-#reset{
-	top:20px;
-	right: 20px;
-}
-#reset:before{
-	background-image: url('../image/reset.png');
-	content: '';
-	width: 36px;
-	height: 36px;
-	display: block;
-}
 #rotate{
 	top:20px;
 	right:80px;
+	cursor: pointer;
+	display: none;
 }
 
 #rotate:before{

@@ -12,7 +12,7 @@ layui.use(['form', 'table'], function () {
         lightBox: "沥滘站",
         shops: "站厅01",
         superLight: "CFCL01",
-        streetMap: "六封灯箱",
+        streetMap: "灯箱类",
         tv: "沥滘-6封灯箱-01",
         state:"使用中",
         remark: "无"
@@ -21,7 +21,7 @@ layui.use(['form', 'table'], function () {
         lightBox: "朝安站",
         shops: "站厅01",
         superLight:"CFCL25",
-        streetMap: "十二封灯箱",
+        streetMap: "灯箱类",
         tv: "朝安-12封灯箱-25",
         state:"待租",
         remark: "3.035m*1.52m"
@@ -57,11 +57,21 @@ layui.use(['form', 'table'], function () {
     // 绑定列表中查看和编辑等事件
     function bindTableEvent() {
         $("[sid=editBtn]").click(function () {
-           alert("编辑");
+            layer.open({
+                type: 2, 
+                area: ['800px', '500px'],
+                offset: 't',
+                content: '../common/light.html' 
+              }); 
         })
 
         $("[sid=viewBtn]").click(function(){
-           alert("查看");
+            layer.open({
+                type: 2, 
+                area: ['800px', '500px'],
+                offset: 't',
+                content: '../common/light.html'
+              }); 
         })
     }
 
