@@ -49,6 +49,15 @@ layui.use(['tree','layer'], function () {
   });
 
   
+  top.openWindow = function(){
+    layer.open({
+      type: 2, 
+      area: ['800px', '500px'],
+      offset: 't',
+      content: '../common/light.html'
+    }); 
+  }
+
 
 
 });

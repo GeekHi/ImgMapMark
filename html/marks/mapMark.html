@@ -36,100 +36,100 @@
     <div class="panel" style="position: relative;">
         <div id="treeBox"></div>
         <div id="iconList">
-            <ul style="height: 500px;overflow-y: scroll;">
-                <li class="showMark">
+            <ul style="height: 510px;overflow-y: scroll;">
+                <li class="showMark" data-id="1">
                     <img src="../../image/icon/icon-01.png">
                     <span>十二封灯箱</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="2">
                     <img src="../../image/icon/icon-02.png">
                     <span>街区图（十二封）</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="3">
                     <img src="../../image/icon/icon-03.png">
                     <span>运营宣传（十二封）</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="4">
                     <img src="../../image/icon/icon-04.png">
                     <span>资讯、向导</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="5">
                     <img src="../../image/icon/icon-05.png">
                     <span>六封灯箱</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="6">
                     <img src="../../image/icon/icon-06.png">
                     <span>超级灯箱</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="7">
                     <img src="../../image/icon/icon-07.png">
                     <span>梯眉灯箱</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="8">
                     <img src="../../image/icon/icon-08.png">
                     <span>柱子</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="9">
                     <img src="../../image/icon/icon-09.png">
                     <span>梯牌</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="10">
                     <img src="../../image/icon/icon-10.png">
                     <span>闸机站</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="11">
                     <img src="../../image/icon/icon-11.png">
                     <span>梯眉</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="12">
                     <img src="../../image/icon/icon-12.png">
                     <span>梯眉侧</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="13">
                     <img src="../../image/icon/icon-13.png">
                     <span>玻璃围挡</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="14">
                     <img src="../../image/icon/icon-14.png">
                     <span>楼梯/电梯</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="15">
                      <img src="../../image/icon/icon-15.png">
                      <span>售票亭</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="16">
                      <img src="../../image/icon/icon-16.png">
                      <span>售票机</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="17">
                      <img src="../../image/icon/icon-17.png">
                      <span>墙贴</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="18">
                      <img src="../../image/icon/icon-18.png">
                      <span>充值机</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="19">
                      <img src="../../image/icon/icon-19.png">
                      <span>车辆操控室</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="20">
                      <img src="../../image/icon/icon-20.png">
                      <span>龙骨架</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="21">
                      <img src="../../image/icon/icon-21.png">
                      <span>ATM取款机</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="22">
                      <img src="../../image/icon/icon-22.png">
                      <span>站立式贴</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="23">
                      <img src="../../image/icon/icon-23.png">
                      <span>地铁公安（十二封）</span>
                 </li>
-                <li class="showMark">
+                <li class="showMark" data-id="24">
                      <img src="../../image/icon/icon-24.png">
                      <span>顺德团委（十二封）</span>
                 </li>
@@ -139,9 +139,9 @@
             <img src="../../image/cad.jpg">
             <button id="rotate" class="lipButton"></button>
         </div>
-                    <!-- <div class="layui-inline" style="position: absolute; right: 30px; bottom: 400px;">
-                <button type="button" id="buildNew" class="layui-btn  layui-btn-normal">保存</button>
-            </div> -->
+        <div class="layui-inline" style="position: absolute; right: 35px; bottom: 300px;">
+            <button type="button" id="saveMark" class="layui-btn  layui-btn-normal">保存</button>
+        </div>
     </div>
 
     <script type="text/javascript" src="../../lib/lip-zoom-mark-jquery.js"></script>
@@ -168,7 +168,11 @@
         }
 
         $(".showMark").mousedown(function () {
-            $('#container').ZoomMark("setAddState", true);
+            var oId = $(this).data("id");
+            if(oId<10) {
+                oId = "0"+ oId;
+            }
+            $('#container').ZoomMark("setAddState", oId);
         })
 
         // 初始化底图缩放比例
@@ -240,12 +244,16 @@
 
         var step = 15;
         $("#rotate").click(function(){
-          
-          var deg = eval("get"+ $(".icon-01").eq(0).css("transform"));
-          $(".icon-01").eq(0).css({'transform':'rotate('+(deg+step)%360+'deg)'});
-            // console.log(getZoomMarkData());
+          var rId =  $('#container').ZoomMark("getRotateId"); 
+          if(rId!='temp'){
+                var deg = eval("get"+ $("#mark_"+rId).css("transform"));
+                $("#mark_"+rId).css({'transform':'rotate('+(deg+step)%360+'deg)'});
+          }
         })
 
+        $("#saveMark").click(function(){
+            layer.msg("保存成功！");
+        })
 
     </script>
     <script src="../../layui.js"></script>
