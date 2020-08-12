@@ -62,6 +62,12 @@ layui.use(['form', 'table'], function () {
                 area: ['800px', '500px'],
                 offset: 't',
                 content: '../common/light.html' 
+                , btn: ['确定', '取消']
+                , btnAlign: 'c' //按钮居中
+                , shade: 0 //不显示遮罩
+                , yes: function () {
+                    layer.closeAll();
+                }
               }); 
         })
 
@@ -71,6 +77,12 @@ layui.use(['form', 'table'], function () {
                 area: ['800px', '500px'],
                 offset: 't',
                 content: '../common/light.html'
+                , btn: ['确定', '取消']
+                , btnAlign: 'c' //按钮居中
+                , shade: 0 //不显示遮罩
+                , yes: function () {
+                    layer.closeAll();
+                }
               }); 
         })
     }

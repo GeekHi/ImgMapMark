@@ -53,7 +53,7 @@ layui.use(['form', 'table'], function () {
                 type: 1,
                 width: "500px"
                 , offset: "auto"
-                , area: ['500px', '400px']
+                , area: ['500px', '350px']
                 , id: 'layerDemo' //防止重复弹出
                 , content: $("#buildWindow").html()
                 , btn: ['确定', '取消']
@@ -73,7 +73,7 @@ layui.use(['form', 'table'], function () {
                 type: 1,
                 width: "500px"
                 , offset: "auto"
-                , area: ['500px', '400px']
+                , area: ['500px', '350px']
                 , id: 'layerDemo' //防止重复弹出
                 , content: $("#buildWindow").html()
                 , btn: ['确定', '取消']
