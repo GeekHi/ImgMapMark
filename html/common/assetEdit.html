@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>资产信息</title>
+  <link rel="stylesheet" href="../../css/layui.css">
+</head>
+
+<body>
+  <div style="padding: 10px;">
+    <form class="layui-form" lay-filter="assetsEditForm">
+      <div class="layui-form-item layui-row">
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">资产用途</label>
+          <div class="layui-input-block">
+            <select name="interest" lay-filter="useOptions">
+              <option value="0">广告</option>
+              <option value="1">商业</option>
+              <option value="2">通信</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">资产编号</label>
+          <div class="layui-input-block">
+            <input type="text" name="title" required lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
+              class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div id="formItemContain"></div>
+      <div class="layui-form-item layui-row" id="area-picker">
+        <div class="layui-form-label">行政区域</div>
+        <div class="layui-input-inline" style="width: 200px;">
+          <select name="province" class="province-selector" data-value="广东省" lay-filter="province-1">
+            <option value="">请选择省</option>
+          </select>
+        </div>
+        <div class="layui-input-inline" style="width: 200px;">
+          <select name="city" class="city-selector" data-value="佛山市" lay-filter="city-1">
+            <option value="">请选择市</option>
+          </select>
+        </div>
+        <div class="layui-input-inline" style="width: 200px;">
+          <select name="county" class="county-selector" data-value="南海区" lay-filter="county-1">
+            <option value="">请选择区</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+          <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- 广告资产表单 -->
+  <script id="advertisingForm" type="text/html">
+    <div class="layui-form-item layui-row">
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">媒体名称</label>
+          <div class="layui-input-block">
+            <select name="interest" lay-filter="useOptions">
+              <option value=""></option>
+              <option value="0">广告</option>
+              <option value="1">商业</option>
+              <option value="2">通信</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">物理线路</label>
+          <div class="layui-input-block">
+              <select name="interest" lay-filter="useOptions">
+                  <option value="GF">广佛线</option>
+                </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">分段线路</label>
+            <div class="layui-input-block">
+              <select name="interest" lay-filter="useOptions">
+                <option value="0">广佛线二期</option>
+                <option value="1">广佛线后通段</option>
+                <option value="2">广佛线首通段</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">站点</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="useOptions">
+                    <option value="GF">广佛线</option>
+                  </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex" value="可用" title="可用">
+              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+            </div>
+          </div>
+</script>
+
+  <!-- 商业资产表单 -->
+  <script id="commercialForm" type="text/html">
+    <div class="layui-form-item layui-row">
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">媒体名称</label>
+          <div class="layui-input-block">
+            <select name="interest" lay-filter="useOptions">
+              <option value=""></option>
+              <option value="0">广告</option>
+              <option value="1">商业</option>
+              <option value="2">通信</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">物理线路</label>
+          <div class="layui-input-block">
+              <select name="interest" lay-filter="useOptions">
+                  <option value="GF">广佛线</option>
+                </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">分段线路</label>
+            <div class="layui-input-block">
+              <select name="interest" lay-filter="useOptions">
+                <option value="0">广佛线二期</option>
+                <option value="1">广佛线后通段</option>
+                <option value="2">广佛线首通段</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">站点</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="useOptions">
+                    <option value="GF">广佛线</option>
+                  </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex" value="可用" title="可用">
+              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+            </div>
+          </div>
+          <div class="layui-form-item layui-row" >
+                 <div class="layui-col-xs6">
+                    <label class="layui-form-label">承租方名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入承租方名称" autocomplete="off"
+                        class="layui-input">
+                    </div>
+                 </div>
+                 <div class="layui-col-xs6">
+                    <label class="layui-form-label">开始出租</label>
+                    <div class="layui-input-block">
+                        <select name="interest" lay-filter="useOptions">
+                            <option value="GF">广佛线</option>
+                          </select>
+                    </div>
+                  </div>
+            </div>
+          <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
+                    <label class="layui-form-label">出租结束</label>
+                    <div class="layui-input-block">
+                        <select name="interest" lay-filter="useOptions">
+                            <option value="GF">广佛线</option>
+                          </select>
+                    </div>
+                  </div>
+                  <div class="layui-col-xs6">
+                      <label class="layui-form-label">交铺日期</label>
+                      <div class="layui-input-block">
+                          <select name="interest" lay-filter="useOptions">
+                              <option value="GF">广佛线</option>
+                            </select>
+                      </div>
+                    </div>
+          </div>
+    </script>
+
+  <!-- 通信资产表单 -->
+  <script id="communicationForm" type="text/html">
+
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">资产名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required lay-verify="required" placeholder="请输入资产名称" autocomplete="off"
+                class="layui-input">
+            </div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">计量单位</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="useOptions">
+                    <option value="GF">广佛线</option>
+                  </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex" value="可用" title="可用">
+              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+            </div>
+          </div>
+</script>
+
+
+  <script src="../../layui.js"></script>
+  <script>
+    //配置插件目录
+    layui.config({
+      base: '../../mods/'
+      , version: '1.0'
+    });
+    layui.use(['layer', 'form', 'layarea'], function () {
+      var layer = layui.layer
+        , form = layui.form
+        , $ = layui.$
+        , layarea = layui.layarea;
+
+      layarea.render({
+        elem: '#area-picker',
+        change: function (res) {
+          //选择结果
+          console.log(res);
+        }
+      });
+
+      // 默认编辑广告类型
+      $("#formItemContain").html($("#advertisingForm").html());
+      form.render();
+
+      // 监听资产用途选择
+      form.on("select(useOptions)", function (data) {
+        var userType = data.value;
+        switch (userType) {
+          case '0':
+            $("#formItemContain").html($("#advertisingForm").html());
+            break;
+          case '1':
+            $("#formItemContain").html($("#commercialForm").html());
+            break;
+          case '2':
+            $("#formItemContain").html($("#communicationForm").html());
+            break;
+        }
+        form.render();
+      })
+
+    });
+  </script>
+</body>
+
+</html>

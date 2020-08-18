@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资产信息</title>
+    <link rel="stylesheet" href="../../css/layui.css">
+</head>
+
+<body>
+    <form class="layui-form" style="padding:15px" lay-filter="stationForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">线路名称:</label>
+            <div class="layui-input-block">
+                <select name="lineName" lay-filter="useFor">
+                    <option value="广佛线">广佛线</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点名称:</label>
+            <div class="layui-input-block">
+                <select id="stationOpts" name="stationName" lay-filter="stationOpts"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">位置名称:</label>
+            <div class="layui-input-block">
+                <input type="text" name="location" lay-verify="require" autocomplete="off" placeholder="请输入位置信息"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" id="area-picker">
+            <div class="layui-form-label">行政区域</div>
+            <div class="layui-input-inline" style="width: 200px;">
+                <select name="prov" class="province-selector" data-value="广东省" lay-filter="province-1">
+                    <option value="">请选择省</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width: 200px;">
+                <select name="city" class="city-selector" data-value="佛山市" lay-filter="city-1">
+                    <option value="">请选择市</option>
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width: 200px;">
+                <select name="area" class="county-selector" data-value="南海区" lay-filter="county-1">
+                    <option value="">请选择区</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">导入底图:</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="test3"><i
+                        class="layui-icon"></i>上传</button>
+            </div>
+        </div>
+
+    </form>
+    <script src="../../layui.js"></script>
+    <script>
+        //配置插件目录
+        layui.config({
+            base: '../../mods/'
+            , version: '1.0'
+        });
+        layui.use(['layer', 'form', 'layarea'], function () {
+            var layer = layui.layer
+                , form = layui.form
+                , $ = layui.$
+                , layarea = layui.layarea;
+
+            var editType;
+            var stationId;
+
+            layarea.render({
+                elem: '#area-picker',
+                // change: function (res) {
+                // //选择结果
+                // console.log(res);
+                // }
+            });
+
+            // 工具方法
+            var getQueryString = function (name) {
+                var getParam = function (keyname) {
+                    var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
+                    var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+                if (typeof name == 'string') return getParam(name);
+                else {
+                    var result = {};
+                    for (var i = 0; i < name.length; i++) {
+                        var keyName = name[i];
+                        result[keyName] = getParam(keyName);
+                    }
+                    return result;
+                }
+            }
+
+
+            // 查询所有站点信息
+            $.ajax({
+                url: "/gzdt/backstage/sysDict/findauto",
+                type: "post",
+                dataType: "json",
+                async: false,
+                data: {
+                    paramKey: "zd"
+                },
+                success: function (result) {
+                    if (result.res == 1) {
+                        var tempArr = [];
+                        $.each(result.obj, function (index, item) {
+                            tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
+                        })
+                        $("#stationOpts").html(tempArr.join(""));
+                        form.render();
+                        initPage();
+                    }
+                }
+            })
+
+
+            function initPage() {
+                editType = getQueryString("editType"); // 1新增 2编辑
+                stationId = getQueryString("editId");
+                if (editType == 2) {
+                    $.ajax({
+                        url: "/gzdt/backstage/station/find",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            stationId: stationId
+                        },
+                        success: function (res) {
+                            if (res.res == 1) {
+                                layui.form.val("stationForm", res.obj);
+                                form.render();
+                            }
+                        }
+                    })
+                }
+            }
+
+
+            // 新建保存站点站厅
+            top.saveStationInfo = function () {
+                var formData = layui.form.val("stationForm");
+                formData.url = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1250667224,1961026130&fm=26&gp=0.jpg";
+                if (editType == 1) {
+                    $.ajax({
+                        url: "/gzdt/backstage/station/add",
+                        type: "post",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(formData)
+                    })
+                }
+                if(editType==2){
+                    formData.id = stationId;
+                    $.ajax({
+                        url: "/gzdt/backstage/station/update",
+                        type: "post",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(formData)
+                    })
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>
