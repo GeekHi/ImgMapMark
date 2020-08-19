@@ -4,37 +4,6 @@ layui.use(['form', 'table'], function () {
         layer = layui.layer,
         table = layui.table;
 
-    var loadTable;
-
-    // 模拟数据
-    var mockData = [{
-        stationName: "广佛线",
-        lightBox: "沥滘站",
-        shops: "广东省佛山市南海区",
-        superLight: "CFCL01",
-        streetMap: "灯箱类",
-        tv: "12封灯箱",
-        state: "使用中",
-        remark: "无",
-        userFor: "广告",
-        startDate: "2020-08-10",
-        endDate: "2022-08-10",
-        transdate: "2022-08-05"
-    }, {
-        stationName: "广佛线",
-        lightBox: "朝安站",
-        shops: "广东省佛山市南海区",
-        superLight: "CFCL25",
-        streetMap: "灯箱类",
-        tv: "超级灯箱",
-        state: "待租",
-        remark: "3.035m*1.52m",
-        userFor: "广告",
-        startDate: "2019-08-08",
-        endDate: "2022-08-10",
-        transdate: "2022-08-05"
-    }];
-
     //总表表头
     var commonCols = [[
         { field: 'stationName', title: '物理线路', width: 90 }
@@ -56,14 +25,14 @@ layui.use(['form', 'table'], function () {
 
     // 广告表头
     var adCols = [[
-        { field: 'stationName', title: '物理线路', width: 90 }
-        , { field: 'stationName', title: '分段线路', width: 90 }
-        , { field: 'lightBox', title: '站点', width: 90 }
-        , { field: 'shops', title: '行政区域', width: 200 }
-        , { field: 'streetMap', title: '资产类型', width: 120 }
-        , { field: 'tv', title: '资产名称', width: 120 }
-        , { field: 'superLight', title: '资产编号', width: 120 }
-        , { field: 'state', title: '使用状态', width: 90 }
+        { field: 'physicsLine', title: '物理线路', width: 90 }
+        , { field: 'segmentLine', title: '分段线路', width: 90 }
+        , { field: 'station', title: '站点', width: 90 }
+        , { field: 'area', title: '行政区域', width: 200 }
+        , { field: 'assetsType', title: '资产类型', width: 120 }
+        , { field: 'assetsName', title: '资产名称', width: 120 }
+        , { field: 'assetsId', title: '资产编号', width: 120 }
+        , { field: 'status', title: '使用状态', width: 90 }
         , { field: 'startDate', title: '开通时间', width: 120 }
         , { field: 'remark', title: '备注' }
         , {
@@ -105,36 +74,145 @@ layui.use(['form', 'table'], function () {
         }
     ]]
 
+    initCommmonTable();
 
-    loadTable = table.render({
-        elem: "#tableBox",
-        cols: commonCols,
-        page: true,
-        data: mockData,
-        done: function () {
-            bindTableEvent();
-        }
-    });
+
+    // 初始化显示总表
+    function initCommmonTable(){
+        table.render({
+            elem: "#tableBox",
+            cols: commonCols,
+            page: true,
+            url: "/gzdt/backstage/assets/findByPage",
+            method: 'post',
+            request: {
+                pageName: 'pageNum', //页码的参数名称
+                limitName: 'pageSize'//每页数据量的参数名
+            },
+            where: {
+                category:"0"
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "count": res.obj.list? res.obj.list.totalRecord:0, //解析数据长度
+                    "data": res.obj.list?  res.obj.results:[], //解析数据列表
+                    "code": res.res == 1 ? 0 : res.code
+                };
+            },
+            done: function () {  //表格渲染完成
+                bindTableEvent();
+            }
+        });
+    }
+
+    // 初始化商业列表
+    function initCommercialTable(){
+        table.render({
+            elem: "#tableBox",
+            cols: commercialCols,
+            page: true,
+            url: "/gzdt/backstage/assets/findByPage",
+            method: 'post',
+            request: {
+                pageName: 'pageNum', //页码的参数名称
+                limitName: 'pageSize'//每页数据量的参数名
+            },
+            where: {
+                category:"1"
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "count": res.obj.list.totalRecord, //解析数据长度
+                    "data": res.obj.list.results, //解析数据列表
+                    "code": res.res == 1 ? 0 : res.code
+                };
+            },
+            done: function () {
+                bindTableEvent();
+            }
+        })
+    }
+
+
+    // 初始化广告列表
+    function initAdTable(){
+        table.render({
+            elem: "#tableBox",
+            cols: adCols,
+            page: true,
+            url: "/gzdt/backstage/assets/findByPage",
+            method: 'post',
+            request: {
+                pageName: 'pageNum', //页码的参数名称
+                limitName: 'pageSize'//每页数据量的参数名
+            },
+            where: {
+                category:"2"  
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "count": res.obj.list.totalRecord, //解析数据长度
+                    "data": res.obj.list.results, //解析数据列表
+                    "code": res.res == 1 ? 0 : res.code
+                };
+            },
+            done: function () {
+                bindTableEvent();
+            }
+        })
+    }
+
+    // 初始化通信列表 
+    function initCommunicateTable(){
+        table.render({
+            elem: "#tableBox",
+            cols: communicateCols,
+            page: true,
+            url: "/gzdt/backstage/assets/findByPage",
+            method: 'post',
+            request: {
+                pageName: 'pageNum', //页码的参数名称
+                limitName: 'pageSize'//每页数据量的参数名
+            },
+            where: {
+                category:"3"
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "count": res.obj.list.totalRecord, //解析数据长度
+                    "data": res.obj.list.results, //解析数据列表
+                    "code": res.res == 1 ? 0 : res.code
+                };
+            },
+            done: function () {
+                bindTableEvent();
+            }
+        })
+    }
+
 
 
     // 绑定列表中查看和编辑等事件
     function bindTableEvent() {
 
         $("[sid=editBtn]").click(function () {
+
             layer.open({
                 type: 2,
                 area: ['850px', '560px'],
                 offset: 't',
-                content: '../common/assetEdit.html'
+                content: '../common/assetEdit.html?editFlag=2'
                 , btn: ['确定', '取消']
                 , btnAlign: 'c' //按钮居中
                 , yes: function () {
                     layer.closeAll();
                 }
             });
+
         })
 
         $("[sid=viewBtn]").click(function () {
+
             layer.open({
                 type: 2,
                 area: ['850px', '560px'],
@@ -153,85 +231,42 @@ layui.use(['form', 'table'], function () {
 
     // 新建资产
     $("#createAsset").click(function () {
+
         layer.open({
             type: 2,
             area: ['850px', '560px'],
             offset: 't',
-            content: '../common/assetEdit.html'
+            content: '../common/assetEdit.html?editFlag=1'
             , btn: ['确定', '取消']
             , btnAlign: 'c' //按钮居中
             , yes: function () {
-                layer.closeAll();
+                top.saveAssetInfo();
+                // layer.closeAll();
             }
         });
+
     })
 
     form.on("select(useFor)", function (data) {
 
         var useType = data.value;
+        $("#mytable").empty();
+        $("#mytable").append('<table id="tableBox"></table>');
         // 总表
         if (useType == -1) {
-
-            $("#mytable").empty();
-            $("#mytable").append('<table id="tableBox"></table>');
-            table.render({
-                elem: "#tableBox",
-                cols: commonCols,
-                page: true,
-                data: mockData,
-                done: function () {
-                    bindTableEvent();
-                }
-            })
-
+            initCommmonTable();
         }
         // 广告表 
         else if (useType == 0) {
-
-            $("#mytable").empty();
-            $("#mytable").append('<table id="tableBox"></table>');
-            table.render({
-                elem: "#tableBox",
-                cols: adCols,
-                page: true,
-                data: mockData,
-                done: function () {
-                    bindTableEvent();
-                }
-            })
-
+            initAdTable();
         } 
         // 商业表
         else if (useType == 1) {
-
-            $("#mytable").empty();
-            $("#mytable").append('<table id="tableBox"></table>');
-            table.render({
-                elem: "#tableBox",
-                cols: commercialCols,
-                page: true,
-                data: mockData,
-                done: function () {
-                    bindTableEvent();
-                }
-            })
-
+            initCommercialTable();
         }
         // 通信表
         else if (useType == 2) {
-
-            $("#mytable").empty();
-            $("#mytable").append('<table id="tableBox"></table>');
-            table.render({
-                elem: "#tableBox",
-                cols: communicateCols,
-                page: true,
-                data: mockData,
-                done: function () {
-                    bindTableEvent();
-                }
-            })
-
+            initCommunicateTable();
         }
     })
 

@@ -16,17 +16,17 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">资产用途</label>
           <div class="layui-input-block">
-            <select name="interest" lay-filter="useOptions">
-              <option value="0">广告</option>
+            <select name="assetsCategory" lay-filter="useOptions">
               <option value="1">商业</option>
-              <option value="2">通信</option>
+              <option value="2">广告</option>
+              <option value="3">通信</option>
             </select>
           </div>
         </div>
         <div class="layui-col-xs6">
           <label class="layui-form-label">资产编号</label>
           <div class="layui-input-block">
-            <input type="text" name="title" required lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
+            <input type="text" name="assetsId" required lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
               class="layui-input">
           </div>
         </div>
@@ -35,7 +35,7 @@
       <div class="layui-form-item layui-row" id="area-picker">
         <div class="layui-form-label">行政区域</div>
         <div class="layui-input-inline" style="width: 200px;">
-          <select name="province" class="province-selector" data-value="广东省" lay-filter="province-1">
+          <select name="prov" class="province-selector" data-value="广东省" lay-filter="province-1">
             <option value="">请选择省</option>
           </select>
         </div>
@@ -45,7 +45,7 @@
           </select>
         </div>
         <div class="layui-input-inline" style="width: 200px;">
-          <select name="county" class="county-selector" data-value="南海区" lay-filter="county-1">
+          <select name="area" class="county-selector" data-value="南海区" lay-filter="county-1">
             <option value="">请选择区</option>
           </select>
         </div>
@@ -53,7 +53,7 @@
       <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-          <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+          <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
         </div>
       </div>
 
@@ -66,20 +66,23 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">媒体名称</label>
           <div class="layui-input-block">
-            <select name="interest" lay-filter="useOptions">
-              <option value=""></option>
-              <option value="0">广告</option>
-              <option value="1">商业</option>
-              <option value="2">通信</option>
+            <select name="assetsName">
+              <option value="1">十二封灯箱</option>
+              <option value="2">街区图（十二封）</option>
+              <option value="3">资讯、导向</option>
+              <option value="4">超级灯箱</option>
+              <option value="5">梯眉灯箱</option>
+              <option value="6">电视机</option>
+              <option value="7">梯牌</option>
             </select>
           </div>
         </div>
         <div class="layui-col-xs6">
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
-              <select name="interest" lay-filter="useOptions">
+              <select name="physicsLine">
                   <option value="GF">广佛线</option>
-                </select>
+              </select>
           </div>
         </div>
       </div>
@@ -87,7 +90,7 @@
           <div class="layui-col-xs6">
             <label class="layui-form-label">分段线路</label>
             <div class="layui-input-block">
-              <select name="interest" lay-filter="useOptions">
+              <select name="segmentLine">
                 <option value="0">广佛线二期</option>
                 <option value="1">广佛线后通段</option>
                 <option value="2">广佛线首通段</option>
@@ -97,18 +100,24 @@
           <div class="layui-col-xs6">
             <label class="layui-form-label">站点</label>
             <div class="layui-input-block">
-                <select name="interest" lay-filter="useOptions">
-                    <option value="GF">广佛线</option>
-                  </select>
+                <select name="station" id="stationOpts"></select>
             </div>
           </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">使用状态</label>
-            <div class="layui-input-block">
-              <input type="radio" name="sex" value="可用" title="可用">
-              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">使用状态</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="status" value="1" title="可用" checked>
+                  <input type="radio" name="status" value="2" title="不可用" >
+                </div>
             </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">开通时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="beginDate" placeholder="选择开通时间" class="layui-input" id="startDate">
+                </div>
+              </div>
           </div>
 </script>
 
@@ -118,18 +127,23 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">媒体名称</label>
           <div class="layui-input-block">
-            <select name="interest" lay-filter="useOptions">
-              <option value=""></option>
-              <option value="0">广告</option>
-              <option value="1">商业</option>
-              <option value="2">通信</option>
+            <select name="assetsName">
+              <option value="20">商铺</option>
+              <option value="21">自助售卖机</option>
+              <option value="22">自助照相机</option>
+              <option value="23">自助雨伞</option>
+              <option value="24">自助售卡机</option>
+              <option value="25">自助充值机</option>
+              <option value="26">写字楼</option>
+              <option value="27">车位</option>
+              <option value="28">公寓</option>
             </select>
           </div>
         </div>
         <div class="layui-col-xs6">
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
-              <select name="interest" lay-filter="useOptions">
+              <select name="physicsLine">
                   <option value="GF">广佛线</option>
                 </select>
           </div>
@@ -139,7 +153,7 @@
           <div class="layui-col-xs6">
             <label class="layui-form-label">分段线路</label>
             <div class="layui-input-block">
-              <select name="interest" lay-filter="useOptions">
+              <select name="segmentLine">
                 <option value="0">广佛线二期</option>
                 <option value="1">广佛线后通段</option>
                 <option value="2">广佛线首通段</option>
@@ -149,33 +163,29 @@
           <div class="layui-col-xs6">
             <label class="layui-form-label">站点</label>
             <div class="layui-input-block">
-                <select name="interest" lay-filter="useOptions">
-                    <option value="GF">广佛线</option>
-                  </select>
+                <select name="station" id="stationOpts"></select>
             </div>
           </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-block">
-              <input type="radio" name="sex" value="可用" title="可用">
-              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+              <input type="radio" name="status" value="可用" title="可用" checked>
+              <input type="radio" name="status" value="不可用" title="不可用" >
             </div>
           </div>
           <div class="layui-form-item layui-row" >
                  <div class="layui-col-xs6">
                     <label class="layui-form-label">承租方名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" required lay-verify="required" placeholder="请输入承租方名称" autocomplete="off"
+                        <input type="text" name="leaseName" required lay-verify="required" placeholder="请输入承租方名称" autocomplete="off"
                         class="layui-input">
                     </div>
                  </div>
                  <div class="layui-col-xs6">
                     <label class="layui-form-label">开始出租</label>
                     <div class="layui-input-block">
-                        <select name="interest" lay-filter="useOptions">
-                            <option value="GF">广佛线</option>
-                          </select>
+                        <input type="text" name="beginDate" placeholder="出租开始日期" class="layui-input" id="startDate">
                     </div>
                   </div>
             </div>
@@ -183,17 +193,13 @@
                 <div class="layui-col-xs6">
                     <label class="layui-form-label">出租结束</label>
                     <div class="layui-input-block">
-                        <select name="interest" lay-filter="useOptions">
-                            <option value="GF">广佛线</option>
-                          </select>
+                        <input type="text" name="endDate" placeholder="出租结束日期" class="layui-input" id="endDate">
                     </div>
                   </div>
                   <div class="layui-col-xs6">
                       <label class="layui-form-label">交铺日期</label>
                       <div class="layui-input-block">
-                          <select name="interest" lay-filter="useOptions">
-                              <option value="GF">广佛线</option>
-                            </select>
+                          <input type="text" name="deliveryDate"   placeholder="选择交铺日期" class="layui-input" id="transDate">
                       </div>
                     </div>
           </div>
@@ -206,24 +212,23 @@
           <div class="layui-col-xs6">
             <label class="layui-form-label">资产名称</label>
             <div class="layui-input-block">
-                <input type="text" name="title" required lay-verify="required" placeholder="请输入资产名称" autocomplete="off"
+                <input type="text" name="assetsName" required lay-verify="required" placeholder="请输入资产名称" autocomplete="off"
                 class="layui-input">
             </div>
           </div>
           <div class="layui-col-xs6">
             <label class="layui-form-label">计量单位</label>
             <div class="layui-input-block">
-                <select name="interest" lay-filter="useOptions">
-                    <option value="GF">广佛线</option>
-                  </select>
+                <input type="text" name="unit" required lay-verify="required" placeholder="请输入计量单位" autocomplete="off"
+                class="layui-input">
             </div>
           </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-block">
-              <input type="radio" name="sex" value="可用" title="可用">
-              <input type="radio" name="sex" value="不可用" title="不可用" checked>
+              <input type="radio" name="status" value="可用" title="可用" checked>
+              <input type="radio" name="status" value="不可用" title="不可用" >
             </div>
           </div>
 </script>
@@ -236,40 +241,160 @@
       base: '../../mods/'
       , version: '1.0'
     });
-    layui.use(['layer', 'form', 'layarea'], function () {
+    layui.use(['layer', 'form', 'laydate', 'layarea'], function () {
       var layer = layui.layer
         , form = layui.form
         , $ = layui.$
+        , laydate = layui.laydate
         , layarea = layui.layarea;
 
       layarea.render({
-        elem: '#area-picker',
-        change: function (res) {
-          //选择结果
-          console.log(res);
-        }
+        elem: '#area-picker'
       });
 
       // 默认编辑广告类型
-      $("#formItemContain").html($("#advertisingForm").html());
-      form.render();
+      $("#formItemContain").html($("#commercialForm").html());
+      initStationOpts();
+      initDate();
+
+
+      // 初始化站点下拉列表
+      function initStationOpts() {
+        $.ajax({
+          url: "/gzdt/backstage/sysDict/findauto",
+          type: "post",
+          dataType: "json",
+          async: false,
+          data: {
+            paramKey: "zd"
+          },
+          success: function (result) {
+            if (result.res == 1) {
+              var tempArr = [];
+              $.each(result.obj, function (index, item) {
+                tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
+              })
+              $("#stationOpts").html(tempArr.join(""));
+              form.render();
+            }
+          }
+        })
+      }
 
       // 监听资产用途选择
       form.on("select(useOptions)", function (data) {
         var userType = data.value;
         switch (userType) {
-          case '0':
-            $("#formItemContain").html($("#advertisingForm").html());
-            break;
           case '1':
             $("#formItemContain").html($("#commercialForm").html());
+            initStationOpts();
             break;
           case '2':
+            $("#formItemContain").html($("#advertisingForm").html());
+            initStationOpts();
+            break;
+          case '3':
             $("#formItemContain").html($("#communicationForm").html());
+            initStationOpts();
             break;
         }
-        form.render();
+        initDate();
       })
+
+      // 初始化时间组件
+      function initDate() {
+        laydate.render({
+          elem: '#startDate',
+          trigger: "click"
+        });
+        laydate.render({
+          elem: '#endDate',
+          trigger: "click"
+        });
+        laydate.render({
+          elem: '#transDate',
+          trigger: "click"
+        });
+      }
+
+      // 工具方法
+      var getQueryString = function (name) {
+        var getParam = function (keyname) {
+          var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
+          var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        }
+        if (typeof name == 'string') return getParam(name);
+        else {
+          var result = {};
+          for (var i = 0; i < name.length; i++) {
+            var keyName = name[i];
+            result[keyName] = getParam(keyName);
+          }
+          return result;
+        }
+      }
+
+      // 保存资产编辑信息
+      top.saveAssetInfo = function () {
+        var formData = layui.form.val("assetsEditForm");
+        var editFlag = getQueryString("editFlag"); // 1新增  2编辑
+        if (editFlag == 1) {
+            if(formData.assetsCategory==1){
+
+            } 
+            if(formData.assetsCategory==2){
+
+            } 
+            if(formData.assetsCategory==3){
+
+            } 
+        }
+      }
+
+      // 添加广告资产
+      function addAdAssets(parmData){
+        $.ajax({
+          url: "/gzdt/backstage/assets/addAdAssets",
+          type: "post",
+          dataType: "json",
+          async: false,
+          data: parmData,
+          success: function (result) {
+            console.log(result);
+          }
+        })
+      }
+
+      //添加商业资产
+      function addBusinessAssets(parmData){
+        $.ajax({
+          url: "gzdt/backstage/assets/addBusinessAssets",
+          type: "post",
+          dataType: "json",
+          async: false,
+          data: parmData,
+          success: function (result) {
+              console.log(result);
+          }
+        })
+      }
+
+      //添加通信资产
+      function addCommunicateAssets(parmData){
+        $.ajax({
+          url: "/gzdt/backstage/assets/addCommunicateAssets",
+          type: "post",
+          dataType: "json",
+          async: false,
+          data: parmData,
+          success: function (result) {
+              console.log(result);
+          }
+        })
+
+      }
 
     });
   </script>

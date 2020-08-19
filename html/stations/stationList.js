@@ -117,8 +117,13 @@ layui.use(['form', 'table'], function () {
 
         })
 
+        // 点击查找
         $("#searchBtn").click(function () {
-            loadTable.reload({})
+            loadTable.reload({
+                where:{
+                    stationName: $.trim($("#stationName").val())
+                }
+            })
         })
 
     }

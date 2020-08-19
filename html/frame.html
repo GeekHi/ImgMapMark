@@ -16,7 +16,8 @@
     <ul class="layui-nav">
       <li class="nav-title"><a href="./menu.html">广佛地铁附属资源资产管理系统</a></li>
       <li class="layui-nav-item">
-        <a href="javascript:;"><img src="../image/userIcon.png" class="layui-nav-img">admin</a>
+        <a href="javascript:;"><img src="../image/userIcon.png" class="layui-nav-img"><span
+            id="userNameShow"></span></a>
         <dl class="layui-nav-child">
           <dd><a href="javascript:;" id="changePwd">密码修改</a></dd>
           <dd><a href="javascript:;" id="logout">退出登录</a></dd>
@@ -29,65 +30,104 @@
 <script src="../layui.js"></script>
 <script src="../lib/jquery.js"></script>
 <script id="pwdTemp" type="text/html">
-  <form class="layui-form" style="padding:15px" >
+  <form class="layui-form" style="padding:15px" lay-filter="pwdResetForm" >
           <div class="layui-form-item">
                   <label class="layui-form-label">原始密码:</label>
                   <div class="layui-input-block">
-                    <input type="password" name="title" lay-verify="require" autocomplete="off" placeholder="请输入原始密码" class="layui-input">
+                    <input type="password" name="oldpassword" lay-verify="required" autocomplete="off" placeholder="请输入原始密码" class="layui-input">
                   </div>
           </div>
           <div class="layui-form-item">
                   <label class="layui-form-label">新密码:</label>
                   <div class="layui-input-block">
-                    <input type="password" name="title" lay-verify="require" autocomplete="off" placeholder="请输入新密码" class="layui-input">
+                    <input type="password" name="password" lay-verify="required" autocomplete="off" placeholder="请输入新密码" class="layui-input">
                   </div>
           </div>
   </form>
 </script>
 <script>
 
-      var menuParm = location.href.split("?")[1];
-      var menuName = menuParm.split("=")[1];
-      if (menuName == "asset") {
-        $("#main").attr("src", "./assets/assetList.html");
-      } else if (menuName == "station") {
-        $("#main").attr("src", "./stations/stationList.html");
-      } else if (menuName == "statistics") {
-        $("#main").attr("src", "./statistics/statisticsList.html");
-      } else if (menuName == "mark") {
-        $("#main").attr("src", "./marks/mapMark.html");
-      }
+  var userName = localStorage.gfUserName;
+  $("#userNameShow").text(userName);
+
+  var menuParm = location.href.split("?")[1];
+  var menuName = menuParm.split("=")[1];
+  if (menuName == "asset") {
+    $("#main").attr("src", "./assets/assetList.html");
+  } else if (menuName == "station") {
+    $("#main").attr("src", "./stations/stationList.html");
+  } else if (menuName == "statistics") {
+    $("#main").attr("src", "./statistics/statisticsList.html");
+  } else if (menuName == "mark") {
+    $("#main").attr("src", "./marks/mapMark.html");
+  }
 
 
 
 
   //注意：导航 依赖 element 模块，否则无法进行功能性操作
-  layui.use(["element","layer"], function () {
+  layui.use(["element", "layer", "form"], function () {
     var element = layui.element,
-    layer = layui.layer;
-  
-   // 点击修改密码
-   $("#changePwd").click(function(){
-      layer.open({
-                type: 1,
-                width: "500px"
-                ,title:"密码设置"
-                , offset: "auto"
-                , area: ['500px', '250px']
-                , id: 'layerDemo' //防止重复弹出
-                , content: $("#pwdTemp").html()
-                , btn: ['确定', '取消']
-                , btnAlign: 'c' //按钮居中
-                , yes: function () {
-                    layer.closeAll();
-                }
-          });
-  })
+      form = layui.form,
+      layer = layui.layer;
 
-  // 退出登录
-  $("#logout").click(function(){
-      location.href = "./login.html"
-  })
+    // 点击修改密码
+    $("#changePwd").click(function () {
+      layer.open({
+        type: 1,
+        width: "500px"
+        , title: "密码设置"
+        , offset: "auto"
+        , area: ['500px', '250px']
+        , id: 'layerDemo' //防止重复弹出
+        , content: $("#pwdTemp").html()
+        , btn: ['确定', '取消']
+        , btnAlign: 'c' //按钮居中
+        , yes: function () {
+          var isValidate = form.validForm("pwdResetForm");
+          if (isValidate) {
+            var formData = layui.form.val("pwdResetForm");
+            formData.loginName = userName;
+            resetPwd(formData);
+            layer.closeAll();
+          }
+        }
+      });
+      form.render();
+    })
+
+    // 退出登录
+    $("#logout").click(function () {
+      $.ajax({
+        url: "/gzdt/backstage/login/system_logout",
+        type: "post",
+        dataType: "json",
+        data: {
+          loginName: userName
+        },
+        success: function (result) {
+          location.href = "./login.html"
+        }
+      })
+
+    })
+
+    // 重置密码
+    function resetPwd(parm) {
+      $.ajax({
+        url: "/gzdt/backstage/account/resetPwd",
+        type: "post",
+        dataType: "json",
+        data: parm,
+        success: function (result) {
+          if (result.res == 1) {
+            layer.msg("密码修改成功！");
+          }
+          // location.href = "./login.html"
+        }
+      })
+
+    }
 
 
   });

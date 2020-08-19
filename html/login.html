@@ -8,13 +8,14 @@
     <title>广佛地铁附属资源资产管理系统</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/layui.css">
+    <link rel="icon" href="../image/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <div class="login-top">
         <div class="left"></div>
         <div class="right">
-            <form class="layui-form login-form" target="_SELF">
+            <form class="layui-form login-form" target="_SELF" lay-filter="loginForm">
                 <img src="../image/login-login.png" alt="">
                 <h3>欢&ensp;迎&ensp;登&ensp;录</h3>
                 <div class="layadmin-user-login-box layadmin-user-login-body layui-form" style="padding-top: 50px;">
@@ -24,7 +25,7 @@
                     <div class="layui-form-item">
                         <label class="layadmin-user-login-icon layui-icon layui-icon-username"
                             for="LAY-user-login-username"></label>
-                        <input type="text" name="username" id="LAY-user-login-username" lay-verify="required"
+                        <input type="text" name="loginName" id="LAY-user-login-username" lay-verify="required"
                             placeholder="用户名" class="layui-input">
                     </div>
                     <div class="layui-form-item" style="text-align: left;">
@@ -47,10 +48,40 @@
         欢迎登录广佛地铁附属资源资产管理系统
     </div>
 </body>
-<script src="../lib/jquery.js"></script>
+<script src="../layui.js"></script>
 <script>
-      $("#loginSubmit").click(function(){
-          location.href = "./menu.html";
-      })
+    layui.use(["form", "layer"], function () {
+        var form = layui.form,
+            $ = layui.$,
+            layer = layui.layer;
+
+        $("#loginSubmit").click(function () {
+            // form.js已被重写，默认不支持form.validForm方法
+            var validate = form.validForm("loginForm");
+            if (validate) {
+                var formData = layui.form.val("loginForm");
+                $.ajax({
+                    url: "/gzdt/backstage/login/system_login",
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    success: function (result) {
+                        // 登陆失败
+                        if (result.resMsg) {
+                            layer.alert(result.resMsg, {
+                                icon: 5,
+                                title: "提示"
+                            });
+                        } else {
+                            localStorage.gfUserName = formData.loginName;
+                            location.href = "./menu.html";
+                        }
+                    }
+                })
+            }
+        })
+    });
+
 </script>
+
 </html>
