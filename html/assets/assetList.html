@@ -11,16 +11,16 @@
 
 <body>
     <div style="padding: 25px;">
-        <form class="layui-form">
+        <form class="layui-form"  lay-filter="assetSearchForm">
             <div class="layui-form-item" style="text-align: right;">
                 <div class="layui-inline">
                     <label class="layui-form-label">资产用途</label>
                     <div class="layui-input-block">
-                        <select name="interest" lay-filter="useFor">
-                            <option value="-1">全部</option>
-                            <option value="0">广告</option>
+                        <select name="category" lay-filter="useFor">
+                            <option value="">全部</option>
                             <option value="1">商业</option>
-                            <option value="2">通信</option>
+                            <option value="2">广告</option>
+                            <option value="3">通信</option>
                         </select>
                     </div>
                 </div>
@@ -28,29 +28,30 @@
                     <label class="layui-form-label">资产类型</label>
                     <div class="layui-input-block">
                         <select name="assetType" lay-filter="assetType">
-                            <!-- 灯箱类、梯牌类、 门架类、 商铺、自助设备、写字楼、 车位、公寓 、 -->
+                            <!-- 灯箱类、梯牌类、 门架类、 商铺、自助设备、写字楼、 车位、公寓 、电视机 -->
                             <option value="">全部</option>
-                            <option value="0">灯箱类</option>
-                            <option value="1">梯牌类</option>
-                            <option value="2">门架类</option>
-                            <option value="3">商铺</option>
-                            <option value="4">自助设备</option>
-                            <option value="5">写字楼</option>
-                            <option value="6">车位</option>
-                            <option value="7">公寓</option>
+                            <option value="1">灯箱类</option>
+                            <option value="2">梯牌类</option>
+                            <option value="3">门架类</option>
+                            <option value="4">商铺</option>
+                            <option value="5">自助设备</option>
+                            <option value="6">写字楼</option>
+                            <option value="7">车位</option>
+                            <option value="8">公寓</option>
+                            <option value="9">电视机</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <div class="layui-input-inline">
-                        <input type="text" name="stationName" placeholder="输入站点名称或资产编号" autocomplete="off"
+                        <input type="text" name="searchKey" placeholder="输入站点名称或资产编号" autocomplete="off"
                             class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <button type="button" class="layui-btn layui-btn-sm layui-btn-normal">查找</button>
+                    <button type="button" id="searchBtn" class="layui-btn layui-btn-sm layui-btn-normal">查找</button>
                     <button type="button" id="createAsset" class="layui-btn layui-btn-sm layui-btn-normal">新建</button>
-                    <button type="button" class="layui-btn layui-btn-sm layui-btn-normal">导出</button>
+                    <button type="button" id="exportBtn" class="layui-btn layui-btn-sm layui-btn-normal">导出</button>
                 </div>
             </div>
         </form>

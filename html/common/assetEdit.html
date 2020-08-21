@@ -81,7 +81,7 @@
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
               <select name="physicsLine">
-                  <option value="GF">广佛线</option>
+                  <option value="广佛线">广佛线</option>
               </select>
           </div>
         </div>
@@ -91,9 +91,9 @@
             <label class="layui-form-label">分段线路</label>
             <div class="layui-input-block">
               <select name="segmentLine">
-                <option value="0">广佛线二期</option>
-                <option value="1">广佛线后通段</option>
-                <option value="2">广佛线首通段</option>
+                <option value="广佛线二期">广佛线二期</option>
+                <option value="广佛线后通段">广佛线后通段</option>
+                <option value="广佛线首通段">广佛线首通段</option>
               </select>
             </div>
           </div>
@@ -108,14 +108,14 @@
             <div class="layui-col-xs6">
                 <label class="layui-form-label">使用状态</label>
                 <div class="layui-input-block">
-                  <input type="radio" name="status" value="1" title="可用" checked>
-                  <input type="radio" name="status" value="2" title="不可用" >
+                  <input type="radio" name="status" value="可用" title="可用" checked>
+                  <input type="radio" name="status" value="不可用" title="不可用" >
                 </div>
             </div>
             <div class="layui-col-xs6">
                 <label class="layui-form-label">开通时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="beginDate" placeholder="选择开通时间" class="layui-input" id="startDate">
+                    <input type="text" name="beginDate" autocomplete="off" placeholder="选择开通时间" class="layui-input" id="startDate">
                 </div>
               </div>
           </div>
@@ -144,7 +144,7 @@
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
               <select name="physicsLine">
-                  <option value="GF">广佛线</option>
+                  <option value="广佛线">广佛线</option>
                 </select>
           </div>
         </div>
@@ -154,9 +154,9 @@
             <label class="layui-form-label">分段线路</label>
             <div class="layui-input-block">
               <select name="segmentLine">
-                <option value="0">广佛线二期</option>
-                <option value="1">广佛线后通段</option>
-                <option value="2">广佛线首通段</option>
+                <option value="广佛线二期">广佛线二期</option>
+                <option value="广佛线后通段">广佛线后通段</option>
+                <option value="广佛线首通段">广佛线首通段</option>
               </select>
             </div>
           </div>
@@ -170,8 +170,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-block">
-              <input type="radio" name="status" value="可用" title="可用" checked>
-              <input type="radio" name="status" value="不可用" title="不可用" >
+              <input type="radio" name="letStatus" value="可用" title="可用" checked>
+              <input type="radio" name="letStatus" value="不可用" title="不可用" >
             </div>
           </div>
           <div class="layui-form-item layui-row" >
@@ -185,7 +185,7 @@
                  <div class="layui-col-xs6">
                     <label class="layui-form-label">开始出租</label>
                     <div class="layui-input-block">
-                        <input type="text" name="beginDate" placeholder="出租开始日期" class="layui-input" id="startDate">
+                        <input type="text" name="beginDate" placeholder="出租开始日期" autocomplete="off" class="layui-input" id="startDate">
                     </div>
                   </div>
             </div>
@@ -193,13 +193,13 @@
                 <div class="layui-col-xs6">
                     <label class="layui-form-label">出租结束</label>
                     <div class="layui-input-block">
-                        <input type="text" name="endDate" placeholder="出租结束日期" class="layui-input" id="endDate">
+                        <input type="text" name="endDate" placeholder="出租结束日期" autocomplete="off" class="layui-input" id="endDate">
                     </div>
                   </div>
                   <div class="layui-col-xs6">
                       <label class="layui-form-label">交铺日期</label>
                       <div class="layui-input-block">
-                          <input type="text" name="deliveryDate"   placeholder="选择交铺日期" class="layui-input" id="transDate">
+                          <input type="text" name="deliveryDate" autocomplete="off"  placeholder="选择交铺日期" class="layui-input" id="transDate">
                       </div>
                     </div>
           </div>
@@ -236,6 +236,26 @@
 
   <script src="../../layui.js"></script>
   <script>
+
+    // 工具方法
+    function getQueryString(name) {
+      var getParam = function (keyname) {
+        var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
+        var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+      }
+      if (typeof name == 'string') return getParam(name);
+      else {
+        var result = {};
+        for (var i = 0; i < name.length; i++) {
+          var keyName = name[i];
+          result[keyName] = getParam(keyName);
+        }
+        return result;
+      }
+    }
+
     //配置插件目录
     layui.config({
       base: '../../mods/'
@@ -248,18 +268,69 @@
         , laydate = layui.laydate
         , layarea = layui.layarea;
 
+      var formInitObj = null;
+      var stationOptsObj = null;
+      var Use_Type = 1; // 默认商业
+
       layarea.render({
         elem: '#area-picker'
       });
 
-      // 默认编辑广告类型
-      $("#formItemContain").html($("#commercialForm").html());
-      initStationOpts();
-      initDate();
+      var editFlag = getQueryString("editFlag"); // 1新增  2编辑
+      var editId = getQueryString("editId");  // 编辑索引id
+      var asset_id = getQueryString("assetsId");
+
+      initPage();
+
+      // 初始化页面
+      function initPage() {
+        // 默认编辑商业类型
+        $("#formItemContain").html($("#commercialForm").html());
+         queryStationOpts();
+         initStationOpts();
+         initDate();
+        if (editFlag == 2) {
+          queryAssetDetail();
+        }
+      }
 
 
-      // 初始化站点下拉列表
-      function initStationOpts() {
+      // 初始化表单状态
+      function formInit() {
+        initStationOpts();
+        initDate();
+        if (formInitObj != null && formInitObj.assetsCategory == Use_Type) {
+          layui.form.val("assetsEditForm", formInitObj);
+          form.render();
+        }
+      }
+
+      // 查询资产详情
+      function queryAssetDetail() {
+        $.ajax({
+          url: "/gzdt/backstage/assets/find",
+          type: "post",
+          dataType: "json",
+          headers: {
+            token: localStorage.gfToken,
+            accountId: localStorage.gfaccountId
+          },
+          async: false,
+          data: {
+            assetsId: asset_id
+          },
+          success: function (result) {
+            if (result.res == 1) {
+                formInitObj = result.obj;
+                Use_Type = formInitObj.assetsCategory;
+                handleFormItem();
+            }
+          }
+        })
+      }
+
+      // 获取所有站点option
+      function queryStationOpts() {
         $.ajax({
           url: "/gzdt/backstage/sysDict/findauto",
           type: "post",
@@ -270,36 +341,45 @@
           },
           success: function (result) {
             if (result.res == 1) {
-              var tempArr = [];
-              $.each(result.obj, function (index, item) {
-                tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
-              })
-              $("#stationOpts").html(tempArr.join(""));
-              form.render();
+              stationOptsObj = result.obj;
             }
           }
         })
       }
 
+      //初始化站点下拉列表
+      function initStationOpts() {
+        var tempArr = [];
+        $.each(stationOptsObj, function (index, item) {
+          tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
+        })
+        $("#stationOpts").html(tempArr.join(""));
+        form.render();
+      }
+
       // 监听资产用途选择
       form.on("select(useOptions)", function (data) {
-        var userType = data.value;
-        switch (userType) {
+        Use_Type = data.value;
+        handleFormItem();
+      })
+
+      // 动态表单切换
+      function handleFormItem(){
+        switch (Use_Type) {
           case '1':
             $("#formItemContain").html($("#commercialForm").html());
-            initStationOpts();
+            formInit();
             break;
           case '2':
             $("#formItemContain").html($("#advertisingForm").html());
-            initStationOpts();
+            formInit();
             break;
           case '3':
             $("#formItemContain").html($("#communicationForm").html());
-            initStationOpts();
+            formInit();
             break;
         }
-        initDate();
-      })
+      }
 
       // 初始化时间组件
       function initDate() {
@@ -317,80 +397,177 @@
         });
       }
 
-      // 工具方法
-      var getQueryString = function (name) {
-        var getParam = function (keyname) {
-          var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
-          var r = decodeURIComponent(window.location.search).substr(1).match(reg);
-          if (r != null) return unescape(r[2]);
-          return null;
-        }
-        if (typeof name == 'string') return getParam(name);
-        else {
-          var result = {};
-          for (var i = 0; i < name.length; i++) {
-            var keyName = name[i];
-            result[keyName] = getParam(keyName);
-          }
-          return result;
-        }
-      }
-
       // 保存资产编辑信息
       top.saveAssetInfo = function () {
         var formData = layui.form.val("assetsEditForm");
-        var editFlag = getQueryString("editFlag"); // 1新增  2编辑
-        if (editFlag == 1) {
-            if(formData.assetsCategory==1){
-
-            } 
-            if(formData.assetsCategory==2){
-
-            } 
-            if(formData.assetsCategory==3){
-
-            } 
+        // 保存商业
+        if (formData.assetsCategory == 1) {
+          saveBusinessAssets(formData);
         }
+        // 保存广告
+        if (formData.assetsCategory == 2) {
+          saveAdAssets(formData);
+        }
+        // 保存通信
+        if (formData.assetsCategory == 3) {
+          saveCommunicateAssets(formData);
+        }
+
       }
 
       // 添加广告资产
-      function addAdAssets(parmData){
+      function saveAdAssets(parmData) {
+        /*
+              <option value="1">十二封灯箱</option>
+              <option value="2">街区图（十二封）</option>
+              <option value="3">资讯、导向</option>
+              <option value="4">超级灯箱</option>
+              <option value="5">梯眉灯箱</option>
+              <option value="6">电视机</option>
+              <option value="7">梯牌</option>
+
+              "1":"灯箱类",
+              "2":"梯牌类",
+              "3":"门架类",
+              "4":"商铺",
+              "5":"自助设备",
+              "6":"写字楼",
+              "7":"车位",
+              "8":"公寓",
+              "9":"电视机"
+        */
+
+        if (parmData.assetsName == "1" || parmData.assetsName == "2" || parmData.assetsName == "3" || parmData.assetsName == "4" || parmData.assetsName == "5") {
+          parmData.assetsType = "1";
+        }
+
+
+        if (parmData.assetsName == "6") {
+          parmData.assetsType = "9";
+        }
+
+
+        if (parmData.assetsName == "7") {
+          parmData.assetsType = "2";
+        }
+
+        var url = "/gzdt/backstage/assets/addAdAssets";
+        if (editFlag == 2) {
+          parmData.id = editId;
+          url = "/gzdt/backstage/assets/updateAdAssets";
+        }
+
         $.ajax({
-          url: "/gzdt/backstage/assets/addAdAssets",
+          url: url,
           type: "post",
+          contentType: "application/json; charset=utf-8",
+          headers: {
+            token: localStorage.gfToken,
+            accountId: localStorage.gfaccountId
+          },
           dataType: "json",
           async: false,
-          data: parmData,
+          data: JSON.stringify(parmData),
           success: function (result) {
-            console.log(result);
+            if (result.res == 1) {
+              top.onSaveSuccess(result);
+            } else {
+              top.onSavefail(result);
+            }
           }
         })
       }
 
-      //添加商业资产
-      function addBusinessAssets(parmData){
+      // 保存商业资产
+      function saveBusinessAssets(parmData) {
+        /*
+              <option value="20">商铺</option>
+              <option value="21">自助售卖机</option>
+              <option value="22">自助照相机</option>
+              <option value="23">自助雨伞</option>
+              <option value="24">自助售卡机</option>
+              <option value="25">自助充值机</option>
+              <option value="26">写字楼</option>
+              <option value="27">车位</option>
+              <option value="28">公寓</option>
+
+              "1":"灯箱类",
+              "2":"梯牌类",
+              "3":"门架类",
+              "4":"商铺",
+              "5":"自助设备",
+              "6":"写字楼",
+              "7":"车位",
+              "8":"公寓",
+              "9":"电视机"
+        */
+        if (parmData.assetsName == '20') {
+          parmData.assetsType = '4';
+        }
+        if (parmData.assetsName == "21" || parmData.assetsName == "22" || parmData.assetsName == "23" || parmData.assetsName == "24" || parmData.assetsName == "25") {
+          parmData.assetsType = '5';
+        }
+        if (parmData.assetsName == "26") {
+          parmData.assetsType = '6';
+        }
+        if (parmData.assetsName == "27") {
+          parmData.assetsType = '7';
+        }
+        if (parmData.assetsName == "28") {
+          parmData.assetsType = '8';
+        }
+
+        var url = "/gzdt/backstage/assets/addBusinessAssets";
+        if (editFlag == 2) {
+          parmData.id = editId;
+          url = "/gzdt/backstage/assets/updateBusinessAssets";
+        }
         $.ajax({
-          url: "gzdt/backstage/assets/addBusinessAssets",
+          url: url,
           type: "post",
+          contentType: "application/json; charset=utf-8",
+          headers: {
+            token: localStorage.gfToken,
+            accountId: localStorage.gfaccountId
+          },
           dataType: "json",
           async: false,
-          data: parmData,
+          data: JSON.stringify(parmData),
           success: function (result) {
-              console.log(result);
+            if (result.res == 1) {
+              top.onSaveSuccess(result);
+            } else {
+              top.onSavefail(result);
+            }
           }
         })
       }
 
       //添加通信资产
-      function addCommunicateAssets(parmData){
+      function saveCommunicateAssets(parmData) {
+        var url = "/gzdt/backstage/assets/addCommunicateAssets";
+        parmData.assetsType = "999";
+        if (editFlag == 2) {
+          parmData.id = editId;
+          url = "/gzdt/backstage/assets/updateCommunicateAssets";
+        }
         $.ajax({
-          url: "/gzdt/backstage/assets/addCommunicateAssets",
+          url: url,
           type: "post",
+          contentType: "application/json; charset=utf-8",
+          headers: {
+            token: localStorage.gfToken,
+            accountId: localStorage.gfaccountId
+          },
           dataType: "json",
           async: false,
-          data: parmData,
+          data: JSON.stringify(parmData),
           success: function (result) {
-              console.log(result);
+            if (result.res == 1) {
+              top.onSaveSuccess(result);
+            } else {
+              top.onSavefail(result);
+            }
           }
         })
 

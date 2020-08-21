@@ -28,19 +28,15 @@ layui.use(['form', 'table'], function () {
     }];
 
     myTableCols = [[ //表头
-        { field:  'lineName', title: '线路名称'}
-        ,{ field: 'stationName', title: '站台名称' }
-        ,{ field: 'roomName', title: '站厅名称' }
-        , { field: 'lightBox', title: '灯箱' }
-        , { field: 'shops', title: '充值机' }
+        { field: 'stationName', title: '站台名称' }
+        , { field: 'lightBox', title: '12封灯箱' }
+        , { field: 'lightBox', title: '6封灯箱' }
+        , { field: 'shops', title: '梯牌' }
+        , { field: 'superLight', title: '立柱灯箱', width: 120 }
         , { field: 'superLight', title: '超级灯箱', width: 120 }
-        , { field: 'streetMap', title: '街区图', width: 120 }
-        , { field: 'tv', title: '电视机', width: 200 }
-        , {
-            title: '操作', width: 120, fixed: 'right', templet: function (d) {
-                return '<a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" sid="viewBtn" >查看</a>'
-            }
-        }
+        , { field: 'streetMap', title: '梯楣灯箱', width: 120 }
+        , { field: 'tv', title: '龙门架', width: 200 }
+        , { field: 'tv', title: '总计', width: 120}
     ]]
 
     loadTable = table.render({

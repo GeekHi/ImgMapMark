@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资产信息</title>
+    <link rel="stylesheet" href="../../css/layui.css">
+    <style>
+        .label-show {
+            float: left;
+            padding: 9px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="padding: 10px;">
+        <form class="layui-form" lay-filter="assetsEditForm">
+            <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
+                    <label class="layui-form-label">资产用途</label>
+                    <div class="label-show" id="assetsCategory"></div>
+                </div>
+                <div class="layui-col-xs6">
+                    <label class="layui-form-label">资产编号</label>
+                    <div class="label-show" id="assetsId"></div>
+                </div>
+            </div>
+            <div id="formItemContain"></div>
+            <div class="layui-form-item layui-row" id="area-picker">
+                <div class="layui-form-label">行政区域</div>
+                <div class="label-show" id="regin"></div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="label-show"  id="remark"></div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- 广告资产表单 -->
+    <script id="advertisingForm" type="text/html">
+    <div class="layui-form-item layui-row">
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">媒体名称</label>
+          <div class="label-show">{{assetsNameEnumMap[d.assetsName]}}</div>
+        </div>
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">物理线路</label>
+          <div class="label-show">{{d.physicsLine}}</div>
+        </div>
+      </div>
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">分段线路</label>
+            <div class="label-show">{{d.segmentLine}}</div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">站点</label>
+            <div class="label-show">{{d.station}}</div>
+          </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">使用状态</label>
+                <div class="label-show">{{d.status}}</div>
+            </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">开通时间</label>
+                <div class="label-show">{{d.beginDate}}</div>
+              </div>
+          </div>
+</script>
+
+    <!-- 商业资产表单 -->
+    <script id="commercialForm" type="text/html">
+    <div class="layui-form-item layui-row">
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">媒体名称</label>
+          <div class="label-show">{{ assetsNameEnumMap[d.assetsName]}}</div>
+        </div>
+        <div class="layui-col-xs6">
+          <label class="layui-form-label">物理线路</label>
+          <div class="label-show">{{d.physicsLine}}</div>
+        </div>
+      </div>
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">分段线路</label>
+            <div class="label-show">{{d.segmentLine}}</div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">站点</label>
+            <div class="label-show">{{d.station}}</div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用状态</label>
+            <div class="label-show">{{d.letStatus}}</div>
+          </div>
+          <div class="layui-form-item layui-row" >
+                 <div class="layui-col-xs6">
+                    <label class="layui-form-label">承租方名称</label>
+                    <div class="label-show">{{d.leaseName}}</div>
+                 </div>
+                 <div class="layui-col-xs6">
+                    <label class="layui-form-label">开始出租</label>
+                    <div class="label-show">{{d.beginDate}}</div>
+                  </div>
+            </div>
+          <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
+                    <label class="layui-form-label">出租结束</label>
+                    <div class="label-show">{{d.endDate}}</div>
+                  </div>
+                  <div class="layui-col-xs6">
+                      <label class="layui-form-label">交铺日期</label>
+                      <div class="label-show">{{d.deliveryDate}}</div>
+                    </div>
+          </div>
+    </script>
+
+    <!-- 通信资产表单 -->
+    <script id="communicationForm" type="text/html">
+
+      <div class="layui-form-item layui-row">
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">资产名称</label>
+            <div class="label-show">{{d.assetsName}}</div>
+          </div>
+          <div class="layui-col-xs6">
+            <label class="layui-form-label">计量单位</label>
+            <div class="label-show">{{d.unit}}</div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">使用状态</label>
+            <div class="label-show">{{d.status}}</div>
+          </div>
+</script>
+
+
+    <script src="../../layui.js"></script>
+    <script>
+                    // 资产类型枚举映射
+                    var assetsTypeEnumMap = {
+                "1": "灯箱类",
+                "2": "梯牌类",
+                "3": "门架类",
+                "4": "商铺",
+                "5": "自助设备",
+                "6": "写字楼",
+                "7": "车位",
+                "8": "公寓",
+                "9": "电视机",
+                "999": "通信设备"
+            }
+
+            // 用途枚举映射
+            var userTypeEnumMap = {
+                "1": "商业",
+                "2": "广告",
+                "3": "通信"
+            }
+
+            // 资产名称映射
+            var assetsNameEnumMap = {
+                "1": "十二封灯箱",
+                "2": "街区图（十二封）",
+                "3": "资讯、导向",
+                "4": "超级灯箱",
+                "5": "梯眉灯箱",
+                "6": "电视机",
+                "7": "梯牌",
+                "20": "商铺",
+                "21": "自助售卖机",
+                "22": "自助照相机",
+                "23": "自助雨伞",
+                "24": "自助售卡机",
+                "25": "自助充值机",
+                "26": "写字楼",
+                "27": "车位",
+                "28": "公寓"
+            }
+
+
+        // 工具方法
+        function getQueryString(name) {
+            var getParam = function (keyname) {
+                var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
+                var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+            if (typeof name == 'string') return getParam(name);
+            else {
+                var result = {};
+                for (var i = 0; i < name.length; i++) {
+                    var keyName = name[i];
+                    result[keyName] = getParam(keyName);
+                }
+                return result;
+            }
+        }
+
+        //配置插件目录
+        layui.config({
+            base: '../../mods/'
+            , version: '1.0'
+        });
+        layui.use(['layer' ,'laytpl'], function () {
+            var layer = layui.layer
+                ,laytpl = layui.laytpl
+                , $ = layui.$;
+
+            //  资产ID
+            var asset_id = getQueryString("assetsId");
+
+            queryAssetDetail();
+
+            // 查询资产详情
+            function queryAssetDetail() {
+                $.ajax({
+                    url: "/gzdt/backstage/assets/find",
+                    type: "post",
+                    dataType: "json",
+                    headers: {
+                        token: localStorage.gfToken,
+                        accountId: localStorage.gfaccountId
+                    },
+                    async: false,
+                    data: {
+                        assetsId: asset_id
+                    },
+                    success: function (result) {
+                        if (result.res == 1) {
+                            renderShowTemplate(result.obj);
+                        }
+                    }
+                })
+            }
+
+            // 展示表单赋值
+            function renderShowTemplate(formData) {
+                var scriptHtml, formHtml; 
+                $("#assetsCategory").text(userTypeEnumMap[formData.assetsCategory]);
+                $("#assetsId").text(formData.assetsId);
+                $("#regin").text(formData.prov + formData.city + formData.area);
+                $("#remark").text(formData.remark);
+                if(formData.assetsCategory==1){
+                    scriptHtml = $("#commercialForm").html();
+                }
+                if(formData.assetsCategory==2){
+                    scriptHtml = $("#advertisingForm").html();
+                }
+                if(formData.assetsCategory==3){
+                    scriptHtml = $("#communicationForm").html();
+                }
+                formHtml = laytpl(scriptHtml).render(formData);
+                $("#formItemContain").html(formHtml);
+            }
+
+
+        });
+    </script>
+</body>
+
+</html>

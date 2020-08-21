@@ -66,6 +66,7 @@
                     dataType: "json",
                     data: formData,
                     success: function (result) {
+                        console.log(result);
                         // 登陆失败
                         if (result.resMsg) {
                             layer.alert(result.resMsg, {
@@ -74,6 +75,8 @@
                             });
                         } else {
                             localStorage.gfUserName = formData.loginName;
+                            localStorage.gfToken = result.obj.token;
+                            localStorage.gfaccountId = result.obj.accountId;
                             location.href = "./menu.html";
                         }
                     }
