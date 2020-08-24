@@ -127,7 +127,7 @@ ul,li{list-style: none;}
 }
 
 .panel #treeBox {
-	width: 170px;
+	width: 200px;
 	position: absolute;
 	left: 5px;
 	top: -80px;
@@ -190,6 +190,15 @@ ul,li{list-style: none;}
 	display: inline-block;
 	vertical-align: top;
 	width: 400px;
+}
+
+.markCodeShow{
+	position: absolute;
+    top: -15px;
+    color: #000;
+    left: 0;
+    width: 90px;
+    text-align: left
 }
 
 .icon-01 {
@@ -494,6 +503,7 @@ ul,li{list-style: none;}
 	display: none;
 	background: #fff;
 	border: 1px #ddd solid;
+	z-index: 9999;
 }
 
 .panel .operMenu li {

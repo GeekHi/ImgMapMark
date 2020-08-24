@@ -6,57 +6,64 @@ layui.use(['form', 'table'], function () {
 
     // 表头实例
     var myTableCols;
-    // 模拟数据
-    var mockData = [{
-        lineName:"广佛线",
-        roomName:"站厅01",
-        stationName: "朝安站",
-        lightBox: 5,
-        shops: 3,
-        superLight: 2,
-        streetMap: 2,
-        tv: 3
-    }, {
-        lineName:"广佛线",
-        roomName:"站厅01",
-        stationName: "东平站",
-        lightBox: 3,
-        shops: 2,
-        superLight: 2,
-        streetMap: 2,
-        tv: 3
-    }];
 
     myTableCols = [[ //表头
         { field: 'stationName', title: '站台名称' }
-        , { field: 'lightBox', title: '12封灯箱' }
-        , { field: 'lightBox', title: '6封灯箱' }
-        , { field: 'shops', title: '梯牌' }
-        , { field: 'superLight', title: '立柱灯箱', width: 120 }
-        , { field: 'superLight', title: '超级灯箱', width: 120 }
-        , { field: 'streetMap', title: '梯楣灯箱', width: 120 }
-        , { field: 'tv', title: '龙门架', width: 200 }
-        , { field: 'tv', title: '总计', width: 120}
+        , { field: 'type1', title: '12封灯箱' }
+        , { field: 'type2', title: '6封灯箱' }
+        , { field: 'type3', title: '梯牌' }
+        , { field: 'type4', title: '立柱灯箱', width: 120 }
+        , { field: 'type5', title: '超级灯箱', width: 120 }
+        , { field: 'type6', title: '梯楣灯箱', width: 120 }
+        , { field: 'type7', title: '龙门架', width: 200 }
+        , { field: 'total', title: '总计', width: 120}
     ]]
 
-    loadTable = table.render({
-        elem: "#mapTable",
-        cols: myTableCols,
-        page: true,
-        data: mockData,
-        done: function () {
-            bindTableEvent();
-        }
-    });
+    queryTableData();
 
-
-    // 绑定列表中查看和编辑等事件
-    function bindTableEvent() {
-
-        $("[sid=viewBtn]").click(function(){
-            location.href = "./statisticDetail.html";
+    // 查询表格数据
+    function queryTableData(){
+        $.ajax({
+            url: "/gzdt/backstage/report/getReport",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.res == 1) {
+                   remderTable(result.obj);
+                } else {
+                    remderTable([]);
+                }
+            }
         })
-
     }
+
+    // 导出文件
+    function exportListFile(){
+        var elemIF = document.createElement("iframe");
+        elemIF.src = "/gzdt/backstage/report/exportExecl";
+        elemIF.style.display = "none";
+        document.body.appendChild(elemIF);
+    }
+    
+
+
+    // 导出文件
+    $("#exportBtn").click(function(){
+        exportListFile();
+    })
+
+
+
+    function remderTable(tdata){
+        loadTable = table.render({
+            elem: "#mapTable",
+            cols: myTableCols,
+            page: false,
+            method: 'post',
+            data:tdata
+        });
+    }
+
 
 });

@@ -7,6 +7,43 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>资产信息</title>
     <link rel="stylesheet" href="../../css/layui.css">
+    <style>
+        .webuploader-container {
+            position: relative;
+        }
+
+        .webuploader-element-invisible {
+            position: absolute !important;
+            clip: rect(1px 1px 1px 1px);
+            /* IE6, IE7 */
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        .webuploader-pick {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            padding: 0px 15px;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .webuploader-pick-hover {
+            /* background: #00a2d4; */
+        }
+
+        .webuploader-pick-disable {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .label-show {
+            float: left;
+            padding: 9px 0px;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,7 +52,7 @@
             <label class="layui-form-label">线路名称:</label>
             <div class="layui-input-block">
                 <select name="lineName" lay-filter="useFor">
-                    <option value="广佛线">广佛线</option>
+                    <option value="26">广佛线</option>
                 </select>
             </div>
         </div>
@@ -28,8 +65,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label">位置名称:</label>
             <div class="layui-input-block">
-                <input type="text" name="location" lay-verify="require" autocomplete="off" placeholder="请输入位置信息"
+                <input type="text" name="location" lay-verify="required" autocomplete="off" placeholder="请输入位置信息"
                     class="layui-input">
+                <!-- <input type="hidden" name="stationName" id="stationName"> -->
             </div>
         </div>
         <div class="layui-form-item" id="area-picker">
@@ -53,8 +91,18 @@
         <div class="layui-form-item">
             <label class="layui-form-label">导入底图:</label>
             <div class="layui-input-block">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="test3"><i
-                        class="layui-icon"></i>上传</button>
+                <div class="layui-btn layui-btn-sm layui-btn-normal" id="test3"><i class="layui-icon"></i>上传</div>
+                <input type="hidden" id="imgUrl" lay-verify="required" name="url">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <div class="label-show">
+                    <a style="color: #1E9FFF;cursor: pointer;display: none;" target="_blank" href="#"
+                        id="imgDownload">查看底图</a>
+                    <span style="color: red;" id="unloadTip">底图未上传</span>
+                </div>
             </div>
         </div>
 
@@ -66,7 +114,7 @@
             base: '../../mods/'
             , version: '1.0'
         });
-        layui.use(['layer', 'form', 'layarea'], function () {
+        layui.use(['layer', 'form', 'layarea', 'webuploader'], function () {
             var layer = layui.layer
                 , form = layui.form
                 , $ = layui.$
@@ -76,11 +124,7 @@
             var stationId;
 
             layarea.render({
-                elem: '#area-picker',
-                // change: function (res) {
-                // //选择结果
-                // console.log(res);
-                // }
+                elem: '#area-picker'
             });
 
             // 工具方法
@@ -116,7 +160,7 @@
                     if (result.res == 1) {
                         var tempArr = [];
                         $.each(result.obj, function (index, item) {
-                            tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
+                            tempArr.push('<option value="' + item.id + '">' + item.paramName + '</option>')
                         })
                         $("#stationOpts").html(tempArr.join(""));
                         form.render();
@@ -140,6 +184,8 @@
                         success: function (res) {
                             if (res.res == 1) {
                                 layui.form.val("stationForm", res.obj);
+                                $("#unloadTip").hide();
+                                $("#imgDownload").show().attr("href", res.url);
                                 form.render();
                             }
                         }
@@ -147,30 +193,85 @@
                 }
             }
 
+            initWebUploader();
+
+            // 初始化webuploader组件
+            function initWebUploader() {
+                fileLoader = WebUploader.create({
+                    auto: true, // 选择完文件后是否自动上传
+                    server: "/gzdt/backstage/tool/webuploader/uploadPic",
+                    pick: "#test3",  // 内部根据当前运行环境创建，可能是input元素，也可能是flash 
+                    chunked: false,  // 开启分片上传
+                    threads: 1,  // 上传并发数，允许同时上传最大进程数
+                    method: "POST",
+                    fileVal: "file", // [默认值:file] 设置文件上传域的name
+                    headers: {
+                        token: localStorage.gfToken,
+                        accountId: localStorage.gfaccountId
+                    },
+                    duplicate: true  // 可以上传重复文件
+                })
+
+                // 上传成功
+                fileLoader.on("uploadSuccess", function (file, response) {
+                    if (response.res = 1) {
+                        layer.msg("上传成功！");
+                        $("#imgUrl").val(response.saveUrl);
+                        $("#imgDownload").show().attr("href", response.saveUrl);
+                        form.render();
+                        $("#unloadTip").hide();
+                    } else {
+                        layer.alert("文件上传失败", {
+                            icon: 5,
+                            title: "提示"
+                        });
+                    }
+                })
+
+            }
+
 
             // 新建保存站点站厅
             top.saveStationInfo = function () {
                 var formData = layui.form.val("stationForm");
-                formData.url = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1250667224,1961026130&fm=26&gp=0.jpg";
+                var validate = form.validForm("stationForm");
+                if (!validate) {
+                    return false;
+                }
                 if (editType == 1) {
                     $.ajax({
                         url: "/gzdt/backstage/station/add",
                         type: "post",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(formData)
+                        data: JSON.stringify(formData),
+                        success: function (res) {
+                            if (res.res == 1) {
+                                top.onSaveSuccess();
+                            } else {
+                                top.onSavefail(res);
+                            }
+                        }
                     })
                 }
-                if(editType==2){
+                if (editType == 2) {
                     formData.id = stationId;
                     $.ajax({
                         url: "/gzdt/backstage/station/update",
                         type: "post",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(formData)
+                        data: JSON.stringify(formData),
+                        success: function (res) {
+                            if (res.res == 1) {
+                                top.onSaveSuccess();
+                            } else {
+                                top.onSavefail(res);
+                            }
+                        }
                     })
                 }
+                return true;
             }
 
         });

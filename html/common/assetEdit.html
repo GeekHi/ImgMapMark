@@ -74,6 +74,9 @@
               <option value="5">梯眉灯箱</option>
               <option value="6">电视机</option>
               <option value="7">梯牌</option>
+              <option value="8">六封灯箱</option>
+              <option value="9">立柱灯箱</option>
+              <option value="10">龙门架</option>
             </select>
           </div>
         </div>
@@ -425,6 +428,10 @@
               <option value="5">梯眉灯箱</option>
               <option value="6">电视机</option>
               <option value="7">梯牌</option>
+              "8": "6封灯箱",
+              "9":"立柱灯箱",
+              "10":"龙门架",
+              "11":"车厢看板",
 
               "1":"灯箱类",
               "2":"梯牌类",
@@ -435,9 +442,10 @@
               "7":"车位",
               "8":"公寓",
               "9":"电视机"
+              "10":"看板"
         */
 
-        if (parmData.assetsName == "1" || parmData.assetsName == "2" || parmData.assetsName == "3" || parmData.assetsName == "4" || parmData.assetsName == "5") {
+        if (parmData.assetsName == "1" || parmData.assetsName == "2" || parmData.assetsName == "3" || parmData.assetsName == "4" || parmData.assetsName == "5"|| parmData.assetsName == "8"|| parmData.assetsName == "9") {
           parmData.assetsType = "1";
         }
 
@@ -449,6 +457,13 @@
 
         if (parmData.assetsName == "7") {
           parmData.assetsType = "2";
+        }
+        if (parmData.assetsName == "10") {
+          parmData.assetsType = "3";
+        }
+
+        if (parmData.assetsName == "11") {
+          parmData.assetsType = "10";
         }
 
         var url = "/gzdt/backstage/assets/addAdAssets";

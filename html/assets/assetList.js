@@ -22,6 +22,7 @@ layui.use(['form', 'table'], function () {
         "7": "车位",
         "8": "公寓",
         "9": "电视机",
+        "10": "看板",
         "999": "通信设备"
     }
 
@@ -41,6 +42,10 @@ layui.use(['form', 'table'], function () {
         "5": "梯眉灯箱",
         "6": "电视机",
         "7": "梯牌",
+        "8": "六封灯箱",
+        "9":"立柱灯箱",
+        "10":"龙门架",
+        "11":"车厢看板",
         "20": "商铺",
         "21": "自助售卖机",
         "22": "自助照相机",
@@ -200,6 +205,8 @@ layui.use(['form', 'table'], function () {
             page: true,
             url: "/gzdt/backstage/assets/findByPage",
             method: 'post',
+            limit:50,
+            limits:[50,100,200,500,1000,1500],
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -229,6 +236,8 @@ layui.use(['form', 'table'], function () {
             page: true,
             url: "/gzdt/backstage/assets/findByPage",
             method: 'post',
+            limit:50,
+            limits:[50,100,200,500,1000,1500],
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -262,6 +271,8 @@ layui.use(['form', 'table'], function () {
             page: true,
             url: "/gzdt/backstage/assets/findByPage",
             method: 'post',
+            limit:50,
+            limits:[50,100,200,500,1000,1500],
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -294,6 +305,8 @@ layui.use(['form', 'table'], function () {
             page: true,
             url: "/gzdt/backstage/assets/findByPage",
             method: 'post',
+            limit:50,
+            limits:[50,100,200,500,1000,1500],
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId

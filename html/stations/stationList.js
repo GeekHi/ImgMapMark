@@ -59,14 +59,29 @@ layui.use(['form', 'table'], function () {
             , btn: ['保存', '关闭']
             , btnAlign: 'c' //按钮居中
             , yes: function () {
-                top.saveStationInfo();
-                layer.closeAll();
-                layer.msg("保存成功！");
-                loadTable.reload({});
+                if(top.saveStationInfo()){
+                    layer.closeAll();
+                } else {
+                    layer.alert("请填写位置名称或上传底图！")
+                }
             }
         });
         form.render();
     })
+
+       // 保存成功
+       top.onSaveSuccess = function () {
+        layer.msg("保存成功！");
+        $("#searchBtn").click();
+    }
+
+    // 保存失败
+    top.onSavefail = function (result) {
+        layer.alert(result.resMsg, {
+            icon: 5,
+            title: "提示"
+        });
+    }
 
 
     // 绑定列表中查看和编辑等事件
