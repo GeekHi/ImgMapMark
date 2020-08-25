@@ -52,7 +52,7 @@
             <label class="layui-form-label">线路名称:</label>
             <div class="layui-input-block">
                 <select name="lineName" lay-filter="useFor">
-                    <option value="26">广佛线</option>
+                    <option value="9999">广佛线</option>
                 </select>
             </div>
         </div>
@@ -70,20 +70,20 @@
                 <!-- <input type="hidden" name="stationName" id="stationName"> -->
             </div>
         </div>
-        <div class="layui-form-item" id="area-picker">
+        <div class="layui-form-item" id="reginpicker">
             <div class="layui-form-label">行政区域</div>
             <div class="layui-input-inline" style="width: 200px;">
-                <select name="prov" class="province-selector" data-value="广东省" lay-filter="province-1">
+                <select name="prov" class="province-selector" data-value="">
                     <option value="">请选择省</option>
                 </select>
             </div>
             <div class="layui-input-inline" style="width: 200px;">
-                <select name="city" class="city-selector" data-value="佛山市" lay-filter="city-1">
+                <select name="city" class="city-selector" data-value="">
                     <option value="">请选择市</option>
                 </select>
             </div>
             <div class="layui-input-inline" style="width: 200px;">
-                <select name="area" class="county-selector" data-value="南海区" lay-filter="county-1">
+                <select name="area" class="county-selector" data-value="" id="areaSel">
                     <option value="">请选择区</option>
                 </select>
             </div>
@@ -99,7 +99,7 @@
             <label class="layui-form-label"></label>
             <div class="layui-input-block">
                 <div class="label-show">
-                    <a style="color: #1E9FFF;cursor: pointer;display: none;" target="_blank" href="#"
+                    <a style="color: #1E9FFF;cursor: pointer;display: none;" 
                         id="imgDownload">查看底图</a>
                     <span style="color: red;" id="unloadTip">底图未上传</span>
                 </div>
@@ -123,9 +123,7 @@
             var editType;
             var stationId;
 
-            layarea.render({
-                elem: '#area-picker'
-            });
+            var map_url;
 
             // 工具方法
             var getQueryString = function (name) {
@@ -183,13 +181,33 @@
                         },
                         success: function (res) {
                             if (res.res == 1) {
+                                res.obj.lineName = res.obj.lineId;
+                                res.obj.stationName = res.obj.stationId;
                                 layui.form.val("stationForm", res.obj);
                                 $("#unloadTip").hide();
-                                $("#imgDownload").show().attr("href", res.url);
+                                $("#imgDownload").show();
+
                                 form.render();
+                                layarea.render({
+                                    elem: '#reginpicker',
+                                    data: {
+                                        province: res.obj.prov,
+                                        city: res.obj.city,
+                                        county: res.obj.area
+                                    }
+                                });
                             }
                         }
                     })
+                } else {
+                    layarea.render({
+                        elem: '#reginpicker',
+                        data:{
+                                province: "广东省",
+                                city:"广州市",
+                                county: "荔湾区"
+                        }
+                    });
                 }
             }
 
@@ -217,7 +235,7 @@
                     if (response.res = 1) {
                         layer.msg("上传成功！");
                         $("#imgUrl").val(response.saveUrl);
-                        $("#imgDownload").show().attr("href", response.saveUrl);
+                        $("#imgDownload").show();
                         form.render();
                         $("#unloadTip").hide();
                     } else {
@@ -230,6 +248,11 @@
 
             }
 
+            // 点击下载;
+            $("#imgDownload").click(function(){
+                layer.closeAll();
+                window.open($("#imgUrl").val())
+            })
 
             // 新建保存站点站厅
             top.saveStationInfo = function () {

@@ -6,6 +6,7 @@ layui.use(['tree', 'layer', 'form'], function () {
 
     var locationId;
 
+
     // 添加完标记回调
     function addRowToTabel(marks) {
 
@@ -45,12 +46,12 @@ layui.use(['tree', 'layer', 'form'], function () {
             // 缩放底图
             $('#container').ZoomMark('changeSettings', {
                 imgPosition: {
-                    height: data.height,
-                    rotate: data.rotate,
-                    scale: data.scale,
-                    width: data.width,
-                    x: data.x,
-                    y: data.y
+                    height: Number(data.height),
+                    rotate: Number(data.rotate),
+                    scale: Number(data.scale),
+                    width: Number(data.width),
+                    x: Number(data.x),
+                    y: Number(data.y)
                 }
             });
             // 绘制标点
@@ -107,8 +108,8 @@ layui.use(['tree', 'layer', 'form'], function () {
             url: $("#locationImg").attr("src"),
             height: markData.imgPosition.height,
             rotate: markData.imgPosition.rotate,
-            scale: markData.imgPosition.scale,
-            w: markData.imgPosition.width,
+            scale:  markData.imgPosition.scale,
+            width:  markData.imgPosition.width,
             x: markData.imgPosition.x,
             y: markData.imgPosition.y
         };
@@ -202,10 +203,29 @@ layui.use(['tree', 'layer', 'form'], function () {
             , closeBtn: 0
             , yes: function () {
                 var validated = form.validForm("markCodeForm");
+                var assetsCode = $("#markCodeVal").val();
                 if (validated) {
-                    $("#markcode_" + id).text($("#markCodeVal").val());
-                    $('#container').ZoomMark("setMarkCode", id, $("#markCodeVal").val())
-                    layer.closeAll();
+                    $.ajax({
+                        url: "/gzdt/backstage/assets/isExist",
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        data: {
+                            assetsId:assetsCode
+                        },
+                        success: function (result) {
+                            if(result.obj==true){
+                                $("#markcode_" + id).text(assetsCode);
+                                $('#container').ZoomMark("setMarkCode", id, assetsCode);
+                                layer.closeAll();
+                            } else {
+                                layer.alert("资产不存在或标记类型错误！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            }
+                        }
+                    })
                 }
             }
         });

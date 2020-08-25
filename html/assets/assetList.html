@@ -7,10 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>资产列表</title>
     <link rel="stylesheet" href="../../css/layui.css">
+    <style>
+      html{
+          height: 100%;
+         overflow: hidden;
+      }
+      body{
+          height: 100%;
+      }
+
+    </style>
 </head>
 
 <body>
-    <div style="padding: 25px;">
+    <div style="padding: 25px;height: 100%;">
         <form class="layui-form"  lay-filter="assetSearchForm">
             <div class="layui-form-item" style="text-align: right;">
                 <div class="layui-inline">
@@ -56,7 +66,7 @@
                 </div>
             </div>
         </form>
-        <div id="mytable">
+        <div id="mytable" style="height: 100%; overflow-y: auto;">
              <div id="tableBox"></div>
         </div>
     </div>

@@ -58,12 +58,18 @@ layui.use(['form', 'table'], function () {
     function remderTable(tdata){
         loadTable = table.render({
             elem: "#mapTable",
+            limit:10,
+            page:true,
             cols: myTableCols,
-            page: false,
-            method: 'post',
             data:tdata
         });
     }
+
+
+    // 点击搜索
+    $("#searchBtn").click(function(){
+        queryTableData();
+    })
 
 
 });
