@@ -28,6 +28,9 @@ layui.use(['form', 'table'], function () {
             type: "post",
             dataType: "json",
             async: false,
+            data:{
+                stationName:$("#stationName").val()
+            },
             success: function (result) {
                 if (result.res == 1) {
                    remderTable(result.obj);

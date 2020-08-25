@@ -70,7 +70,7 @@
             </div>
             <div class="layui-col-xs6">
                 <label class="layui-form-label">开通时间</label>
-                <div class="label-show">{{d.beginDate}}</div>
+                <div class="label-show">{{d.beginDate || "--" }}</div>
               </div>
           </div>
 </script>
@@ -249,7 +249,7 @@
                 $("#assetsCategory").text(userTypeEnumMap[formData.assetsCategory]);
                 $("#assetsId").text(formData.assetsId);
                 $("#regin").text(formData.prov + formData.city + formData.area);
-                $("#remark").text(formData.remark);
+                $("#remark").text(formData.remark || "--"  );
                 if(formData.assetsCategory==1){
                     scriptHtml = $("#commercialForm").html();
                 }

@@ -239,6 +239,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
+            height:500,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -274,6 +275,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
+            height:500,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -308,6 +310,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
+            height:500,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId

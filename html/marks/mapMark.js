@@ -58,6 +58,9 @@ layui.use(['tree', 'layer', 'form'], function () {
             $('#container').ZoomMark('setMarkList', data.markList);
             // 校准
             initZoom(1);
+        } else {
+            $('#container').ZoomMark('reset'); 
+            $('#container').ZoomMark('setMarkList', []);
         }
 
     }
@@ -95,7 +98,9 @@ layui.use(['tree', 'layer', 'form'], function () {
         var rId = $('#container').ZoomMark("getRotateId");
         if (rId != 'temp') {
             var deg = eval("get" + $("#mark_" + rId).css("transform"));
-            $("#mark_" + rId).css({ 'transform': 'rotate(' + (deg + step) % 360 + 'deg)' });
+            var nextDeg = (deg + step) % 360;
+            $('#container').ZoomMark("setMarkRotate", rId, nextDeg); 
+            $("#mark_" + rId).css({ 'transform': 'rotate(' + nextDeg + 'deg)' });
         }
     })
 
@@ -113,7 +118,12 @@ layui.use(['tree', 'layer', 'form'], function () {
             x: markData.imgPosition.x,
             y: markData.imgPosition.y
         };
-        postData.markList = markData.mMarks;
+        postData.markList =[];
+        $.each(markData.mMarks,function(index,item){
+             if(item.available){
+                postData.markList.push(item);
+             }
+        })
         $.ajax({
             url: "/gzdt/backstage/station/update",
             type: "post",
@@ -149,6 +159,13 @@ layui.use(['tree', 'layer', 'form'], function () {
                         , data: treeData
                         , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
                         , click: function (obj) {
+                            $(".layui-tree-set").removeClass("active");
+                            $(obj.elem).addClass("active");
+                            layer.load(2, {  
+                                shade: [0.3, 'gray'], 
+                                content: '加载中...',
+                                time:1000
+                            });
                             locationId = obj.data.id;
                             queryLocationInfo();
                         }
@@ -219,7 +236,7 @@ layui.use(['tree', 'layer', 'form'], function () {
                                 $('#container').ZoomMark("setMarkCode", id, assetsCode);
                                 layer.closeAll();
                             } else {
-                                layer.alert("资产不存在或标记类型错误！", {
+                                layer.alert("资产不存在！", {
                                     icon: 5,
                                     title: "提示"
                                 });
