@@ -27,7 +27,7 @@ layui.use(['form', 'table'], function () {
         elem: "#mapTable",
         cols: myTableCols,
         page: true,
-        url: "/gzdt/backstage/station/findByPage",
+        url: "/gfdt/backstage/station/findByPage",
         method: 'post',
         request: {
             pageName: 'pageNum', //页码的参数名称
@@ -114,7 +114,7 @@ layui.use(['form', 'table'], function () {
                 , yes: function (index, layero) {
                     layer.closeAll();
                     $.ajax({
-                        url: "/gzdt/backstage/station/delete",
+                        url: "/gfdt/backstage/station/delete",
                         type: "post",
                         dataType: "json",
                         data: {

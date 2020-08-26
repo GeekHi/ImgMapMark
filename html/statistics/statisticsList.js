@@ -24,7 +24,7 @@ layui.use(['form', 'table'], function () {
     // 查询表格数据
     function queryTableData(){
         $.ajax({
-            url: "/gzdt/backstage/report/getReport",
+            url: "/gfdt/backstage/report/getReport",
             type: "post",
             dataType: "json",
             async: false,
@@ -44,7 +44,7 @@ layui.use(['form', 'table'], function () {
     // 导出文件
     function exportListFile(){
         var elemIF = document.createElement("iframe");
-        elemIF.src = "/gzdt/backstage/report/exportExecl";
+        elemIF.src = "/gfdt/backstage/report/exportExecl";
         elemIF.style.display = "none";
         document.body.appendChild(elemIF);
     }

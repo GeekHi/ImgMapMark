@@ -26,7 +26,7 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">资产编号</label>
           <div class="layui-input-block">
-            <input type="text" name="assetsId" required lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
+            <input type="text" name="assetsId"  lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
               class="layui-input">
           </div>
         </div>
@@ -35,17 +35,17 @@
       <div class="layui-form-item layui-row" id="area-picker">
         <div class="layui-form-label">行政区域</div>
         <div class="layui-input-inline" style="width: 200px;">
-          <select name="prov" class="province-selector" data-value="广东省" lay-filter="province-1">
+          <select name="prov" class="province-selector" data-value="" lay-filter="province-1">
             <option value="">请选择省</option>
           </select>
         </div>
         <div class="layui-input-inline" style="width: 200px;">
-          <select name="city" class="city-selector" data-value="佛山市" lay-filter="city-1">
+          <select name="city" class="city-selector" data-value="" lay-filter="city-1">
             <option value="">请选择市</option>
           </select>
         </div>
         <div class="layui-input-inline" style="width: 200px;">
-          <select name="area" class="county-selector" data-value="南海区" lay-filter="county-1">
+          <select name="area" class="county-selector" data-value="" lay-filter="county-1">
             <option value="">请选择区</option>
           </select>
         </div>
@@ -181,7 +181,7 @@
                  <div class="layui-col-xs6">
                     <label class="layui-form-label">承租方名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="leaseName" required lay-verify="required" placeholder="请输入承租方名称" autocomplete="off"
+                        <input type="text" name="leaseName"  placeholder="请输入承租方名称" autocomplete="off"
                         class="layui-input">
                     </div>
                  </div>
@@ -275,9 +275,7 @@
       var stationOptsObj = null;
       var Use_Type = 1; // 默认商业
 
-      layarea.render({
-        elem: '#area-picker'
-      });
+
 
       var editFlag = getQueryString("editFlag"); // 1新增  2编辑
       var editId = getQueryString("editId");  // 编辑索引id
@@ -294,6 +292,15 @@
          initDate();
         if (editFlag == 2) {
           queryAssetDetail();
+        } else {
+          layarea.render({
+            elem: '#area-picker',
+            data:{
+                province: "广东省",
+                city:"广州市",
+                county: "荔湾区"
+            }
+          });
         }
       }
 
@@ -311,7 +318,7 @@
       // 查询资产详情
       function queryAssetDetail() {
         $.ajax({
-          url: "/gzdt/backstage/assets/find",
+          url: "/gfdt/backstage/assets/find",
           type: "post",
           dataType: "json",
           headers: {
@@ -327,6 +334,14 @@
                 formInitObj = result.obj;
                 Use_Type = formInitObj.assetsCategory;
                 handleFormItem();
+                layarea.render({
+                  elem: '#area-picker',
+                  data:{
+                      province: formInitObj.prov,
+                      city:formInitObj.city,
+                      county: formInitObj.area
+                  }
+                });
             }
           }
         })
@@ -335,7 +350,7 @@
       // 获取所有站点option
       function queryStationOpts() {
         $.ajax({
-          url: "/gzdt/backstage/sysDict/findauto",
+          url: "/gfdt/backstage/sysDict/findauto",
           type: "post",
           dataType: "json",
           async: false,
@@ -403,6 +418,13 @@
       // 保存资产编辑信息
       top.saveAssetInfo = function () {
         var formData = layui.form.val("assetsEditForm");
+
+        var validate = form.validForm("assetsEditForm");
+
+        if(!validate){
+          return 
+        }
+
         // 保存商业
         if (formData.assetsCategory == 1) {
           saveBusinessAssets(formData);
@@ -466,10 +488,10 @@
           parmData.assetsType = "10";
         }
 
-        var url = "/gzdt/backstage/assets/addAdAssets";
+        var url = "/gfdt/backstage/assets/addAdAssets";
         if (editFlag == 2) {
           parmData.id = editId;
-          url = "/gzdt/backstage/assets/updateAdAssets";
+          url = "/gfdt/backstage/assets/updateAdAssets";
         }
 
         $.ajax({
@@ -532,10 +554,10 @@
           parmData.assetsType = '8';
         }
 
-        var url = "/gzdt/backstage/assets/addBusinessAssets";
+        var url = "/gfdt/backstage/assets/addBusinessAssets";
         if (editFlag == 2) {
           parmData.id = editId;
-          url = "/gzdt/backstage/assets/updateBusinessAssets";
+          url = "/gfdt/backstage/assets/updateBusinessAssets";
         }
         $.ajax({
           url: url,
@@ -560,11 +582,11 @@
 
       //添加通信资产
       function saveCommunicateAssets(parmData) {
-        var url = "/gzdt/backstage/assets/addCommunicateAssets";
+        var url = "/gfdt/backstage/assets/addCommunicateAssets";
         parmData.assetsType = "999";
         if (editFlag == 2) {
           parmData.id = editId;
-          url = "/gzdt/backstage/assets/updateCommunicateAssets";
+          url = "/gfdt/backstage/assets/updateCommunicateAssets";
         }
         $.ajax({
           url: url,

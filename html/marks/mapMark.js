@@ -6,17 +6,16 @@ layui.use(['tree', 'layer', 'form'], function () {
 
     var locationId;
 
+    var stationId;
+    
+
 
     // 添加完标记回调
     function addRowToTabel(marks) {
 
     }
 
-    // 删除标记
-    function deleteMark(id) {
-        $('#container').ZoomMark('deleteMark', id);
-    }
-
+    // 拖拽id
     $(".showMark").mousedown(function () {
         var oId = $(this).data("id");
         if (oId < 10) {
@@ -63,6 +62,11 @@ layui.use(['tree', 'layer', 'form'], function () {
             $('#container').ZoomMark('setMarkList', []);
         }
 
+
+        // 重置状态锁
+        $("#lockBtn").removeClass("switch-open").addClass("switch-lock");
+        $('#container').ZoomMark("switchState",false); 
+
     }
 
 
@@ -93,6 +97,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     }
 
 
+    // 旋转
     var step = 15;
     $("#rotate").click(function () {
         var rId = $('#container').ZoomMark("getRotateId");
@@ -104,12 +109,24 @@ layui.use(['tree', 'layer', 'form'], function () {
         }
     })
 
+    // 拉长
+    $("#extention").click(function(){
+        var rId = $('#container').ZoomMark("getRotateId");
+        if (rId != 'temp') {
+            var offWidth = $("#mark_" + rId).width();
+            offWidth = Number(offWidth) + 15;
+            $("#mark_" + rId).css("width",offWidth);
+            $('#container').ZoomMark("setMarkWidth", rId, offWidth);  
+        }
+    })
+
 
     // 点击保存标记
     $("#saveMark").click(function () {
         var markData = getZoomMarkData();
         var postData = {
             id: locationId,
+            stationName:stationId,
             url: $("#locationImg").attr("src"),
             height: markData.imgPosition.height,
             rotate: markData.imgPosition.rotate,
@@ -125,7 +142,7 @@ layui.use(['tree', 'layer', 'form'], function () {
              }
         })
         $.ajax({
-            url: "/gzdt/backstage/station/update",
+            url: "/gfdt/backstage/station/update",
             type: "post",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -133,6 +150,11 @@ layui.use(['tree', 'layer', 'form'], function () {
             success: function (res) {
                 if (res.res == 1) {
                     layer.msg("保存成功！");
+                } else {
+                    layer.alert("保存失败！", {
+                        icon: 5,
+                        title: "提示"
+                    });
                 }
             }
         })
@@ -143,7 +165,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     // 获取树结构数据
     function getTreeData() {
         $.ajax({
-            url: "/gzdt/backstage/station/getTree",
+            url: "/gfdt/backstage/station/getTree",
             type: "post",
             dataType: "json",
             async: false,
@@ -151,11 +173,14 @@ layui.use(['tree', 'layer', 'form'], function () {
                 if (result.res == 1) {
                     var treeData = JSON.parse(result.obj);
                     if (treeData[0].children[0].children[0].children.length > 0) {
+                        treeData[0].spread = true;
+                        treeData[0].children[0].spread = true;
+                        treeData[0].children[0].children[0].spread = true;
                         locationId = treeData[0].children[0].children[0].children[0].id;
                         queryLocationInfo();
                     }
                     tree.render({
-                        elem: '#treeBox'
+                        elem: '#myTree'
                         , data: treeData
                         , onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
                         , click: function (obj) {
@@ -179,7 +204,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     // 查询位置信息
     function queryLocationInfo() {
         $.ajax({
-            url: "/gzdt/backstage/station/find",
+            url: "/gfdt/backstage/station/find",
             type: "post",
             dataType: "json",
             async: false,
@@ -188,8 +213,13 @@ layui.use(['tree', 'layer', 'form'], function () {
             },
             success: function (result) {
                 if (result.res == 1) {
+                    top.setLocationShow(result.obj.lineName+" - " + result.obj.stationName + " - " + result.obj.location)
                     $("#locationImg").attr("src", result.obj.url);
-                    initMapState(result.obj);
+                    stationId = result.obj.stationId;
+                    // 等底图替换加载完成再初始化否则无法自动获取宽
+                    setTimeout(function() {
+                        initMapState(result.obj);
+                    }, 1000);
                 }
             }
         })
@@ -217,13 +247,12 @@ layui.use(['tree', 'layer', 'form'], function () {
             content: $("#markCodeForm").html()
             , btn: ['保存']
             , btnAlign: 'c' //按钮居中
-            , closeBtn: 0
             , yes: function () {
                 var validated = form.validForm("markCodeForm");
                 var assetsCode = $("#markCodeVal").val();
                 if (validated) {
                     $.ajax({
-                        url: "/gzdt/backstage/assets/isExist",
+                        url: "/gfdt/backstage/assets/isExist",
                         type: "post",
                         dataType: "json",
                         async: false,
@@ -244,9 +273,24 @@ layui.use(['tree', 'layer', 'form'], function () {
                         }
                     })
                 }
+            },
+            cancel: function(index, layero){ 
+                $('#container').ZoomMark("deleteMark", id);  
+                return true; 
             }
         });
     }
+
+    // 开关
+    $("#lockBtn").click(function(){
+         if($(this).hasClass("switch-lock")){
+            $(this).removeClass("switch-lock").addClass("switch-open");
+            $('#container').ZoomMark("switchState",true);    
+         } else {
+            $(this).removeClass("switch-open").addClass("switch-lock");
+            $('#container').ZoomMark("switchState",false); 
+         }
+    })
 
 
 });

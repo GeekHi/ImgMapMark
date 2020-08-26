@@ -105,7 +105,7 @@ layui.use(['form', 'table'], function () {
         }
         , { field: 'remark', title: '备注' }
         , {
-            title: '操作', fixed: 'right', templet: function (d) {
+            title: '操作', width:150, fixed: 'right', templet: function (d) {
                 return '<a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-id="' + d.assetsId + '"  sid="viewBtn" >查看</a><a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-aid="' + d.assetsId + '"  data-eid="' + d.id + '"   sid="editBtn">编辑</a><a  style="color:#1E9FFF;cursor:pointer;" data-id="' + d.assetsId + '" sid="delBtn">删除</a>'
             }
         }
@@ -169,7 +169,7 @@ layui.use(['form', 'table'], function () {
         , { field: 'deliveryDate', title: '交铺日期', width: 120 }
         , { field: 'remark', title: '备注' }
         , {
-            title: '操作', fixed: 'right', templet: function (d) {
+            title: '操作', width:150, fixed: 'right', templet: function (d) {
                 return '<a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-id="' + d.assetsId + '" sid="viewBtn" >查看</a><a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-aid="' + d.assetsId + '"  data-eid="' + d.id + '"  sid="editBtn">编辑</a><a  style="color:#1E9FFF;cursor:pointer;" data-id="' + d.assetsId + '" sid="delBtn">删除</a>'
             }
         }
@@ -188,7 +188,7 @@ layui.use(['form', 'table'], function () {
         , { field: 'unit', title: '计量单位', width: 90 }
         , { field: 'remark', title: '备注' }
         , {
-            title: '操作', fixed: 'right', width: 150, templet: function (d) {
+            title: '操作',  fixed: 'right', width: 150, templet: function (d) {
                 return '<a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-id="' + d.assetsId + '"  sid="viewBtn" >查看</a><a  style="color:#1E9FFF;cursor:pointer;margin-right:10px;" data-aid="' + d.assetsId + '"  data-eid="' + d.id + '"  sid="editBtn">编辑</a><a  style="color:#1E9FFF;cursor:pointer;" data-id="' + d.assetsId + '" sid="delBtn">删除</a>'
             }
         }
@@ -203,11 +203,11 @@ layui.use(['form', 'table'], function () {
             elem: "#tableBox",
             cols: commonCols,
             page: true,
-            url: "/gzdt/backstage/assets/findByPage",
+            url: "/gfdt/backstage/assets/findByPage",
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:500,
+            height:400,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -235,11 +235,11 @@ layui.use(['form', 'table'], function () {
             elem: "#tableBox",
             cols: commercialCols,
             page: true,
-            url: "/gzdt/backstage/assets/findByPage",
+            url: "/gfdt/backstage/assets/findByPage",
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:500,
+            height:400,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -271,11 +271,11 @@ layui.use(['form', 'table'], function () {
             elem: "#tableBox",
             cols: adCols,
             page: true,
-            url: "/gzdt/backstage/assets/findByPage",
+            url: "/gfdt/backstage/assets/findByPage",
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:500,
+            height:400,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -306,11 +306,11 @@ layui.use(['form', 'table'], function () {
             elem: "#tableBox",
             cols: communicateCols,
             page: true,
-            url: "/gzdt/backstage/assets/findByPage",
+            url: "/gfdt/backstage/assets/findByPage",
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:500,
+            height:400,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -380,7 +380,7 @@ layui.use(['form', 'table'], function () {
                 , yes: function (index, layero) {
                     layer.closeAll();
                     $.ajax({
-                        url: "/gzdt/backstage/assets/delete",
+                        url: "/gfdt/backstage/assets/delete",
                         type: "post",
                         headers: {
                             token: localStorage.gfToken,
@@ -416,7 +416,7 @@ layui.use(['form', 'table'], function () {
             , btn: ['确定', '取消']
             , btnAlign: 'c' //按钮居中
             , yes: function () {
-                layer.closeAll();
+                // layer.closeAll();
                 top.saveAssetInfo();
             }
         });
@@ -452,7 +452,7 @@ layui.use(['form', 'table'], function () {
     $("#exportBtn").click(function () {
         var formData = layui.form.val("assetSearchForm");
         var elemIF = document.createElement("iframe");
-        elemIF.src = "/gzdt/backstage/assets/exportExecl?category=" + formData.category + "&assetsType=" + formData.assetsType + "&searchKey=" + formData.searchKey;
+        elemIF.src = "/gfdt/backstage/assets/exportExecl?category=" + formData.category + "&assetsType=" + formData.assetsType + "&searchKey=" + formData.searchKey;
         elemIF.style.display = "none";
         document.body.appendChild(elemIF);
     })
@@ -460,6 +460,7 @@ layui.use(['form', 'table'], function () {
 
     // 保存成功
     top.onSaveSuccess = function () {
+        layer.closeAll();
         layer.msg("保存成功！");
         $("#searchBtn").click();
     }

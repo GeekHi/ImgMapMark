@@ -147,7 +147,7 @@
 
             // 查询所有站点信息
             $.ajax({
-                url: "/gzdt/backstage/sysDict/findauto",
+                url: "/gfdt/backstage/sysDict/findauto",
                 type: "post",
                 dataType: "json",
                 async: false,
@@ -173,7 +173,7 @@
                 stationId = getQueryString("editId");
                 if (editType == 2) {
                     $.ajax({
-                        url: "/gzdt/backstage/station/find",
+                        url: "/gfdt/backstage/station/find",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -217,7 +217,7 @@
             function initWebUploader() {
                 fileLoader = WebUploader.create({
                     auto: true, // 选择完文件后是否自动上传
-                    server: "/gzdt/backstage/tool/webuploader/uploadPic",
+                    server: "/gfdt/backstage/tool/webuploader/uploadPic",
                     pick: "#test3",  // 内部根据当前运行环境创建，可能是input元素，也可能是flash 
                     chunked: false,  // 开启分片上传
                     threads: 1,  // 上传并发数，允许同时上传最大进程数
@@ -263,7 +263,7 @@
                 }
                 if (editType == 1) {
                     $.ajax({
-                        url: "/gzdt/backstage/station/add",
+                        url: "/gfdt/backstage/station/add",
                         type: "post",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
@@ -280,7 +280,7 @@
                 if (editType == 2) {
                     formData.id = stationId;
                     $.ajax({
-                        url: "/gzdt/backstage/station/update",
+                        url: "/gfdt/backstage/station/update",
                         type: "post",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",

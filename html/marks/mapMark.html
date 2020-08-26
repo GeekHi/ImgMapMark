@@ -34,7 +34,9 @@
     <div class="headbox"></div>
 
     <div class="panel" style="position: relative;">
-        <div id="treeBox" style="overflow-y: auto;"></div>
+        <div id="treeBox">
+            <div id="myTree" style="height: 550px; overflow-y: auto;"></div>
+        </div>
         <div style="width: 10px;display: table-cell;"></div>
         <div id="iconList">
             <ul style="height: 600px;">
@@ -44,17 +46,17 @@
                 "3": "资讯、导向",
                 "4": "超级灯箱",
                 "5": "梯眉灯箱",
-                "6": "电视机",    缺
+                "6": "电视机",    
                 "7": "梯牌",     
                 "8": "六封灯箱",
-                "9": "立柱灯箱",  缺
+                "9": "立柱灯箱",  
                 "10":"龙门架",
-                "11":"车厢看板",  缺
-                "20": "商铺",     缺
-                "21": "自助售卖机",  缺
-                "22": "自助照相机",  缺
-                "23": "自助雨伞",    缺
-                "24": "自助售卡机",  缺
+                "11":"车厢看板",  
+                "20": "商铺",     
+                "21": "自助售卖机",  
+                "22": "自助照相机",  
+                "23": "自助雨伞",    
+                "24": "自助售卡机",  
                 "25": "自助充值机"   
              -->
                 <li class="showMark" data-id="1">
@@ -131,8 +133,10 @@
         <div id="container">
                 <img id="locationImg" src="">
                 <button id="rotate" class="lipButton"></button>
+                <button id="extention" class="lipButton"></button>
         </div>
         <div class="layui-inline" style="position: fixed; right: 35px; bottom: 100px;">
+            <button id="lockBtn" class="switch-lock"></button>
             <button type="button" id="saveMark" class="layui-btn  layui-btn-normal">保存</button>
         </div>
     </div>

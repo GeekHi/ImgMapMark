@@ -15,6 +15,7 @@
   <div class="markNav">
     <ul class="layui-nav">
       <li class="nav-title"><a href="./menu.html">广佛地铁附属资源资产管理系统</a></li>
+      <li class="nav-title"><a id="locationName" style="font-size: 18px;">广佛线 - 沥滘站 - 站厅</a></li>
       <li class="layui-nav-item">
         <a href="javascript:;"><img src="../image/userIcon.png" class="layui-nav-img"><span
             id="userNameShow"></span></a>
@@ -99,7 +100,7 @@
     // 退出登录
     $("#logout").click(function () {
       $.ajax({
-        url: "/gzdt/backstage/login/system_logout",
+        url: "/gfdt/backstage/login/system_logout",
         type: "post",
         dataType: "json",
         data: {
@@ -115,7 +116,7 @@
     // 重置密码
     function resetPwd(parm) {
       $.ajax({
-        url: "/gzdt/backstage/account/resetPwd",
+        url: "/gfdt/backstage/account/resetPwd",
         type: "post",
         dataType: "json",
         data: parm,
@@ -127,6 +128,12 @@
         }
       })
 
+    }
+
+
+    // 设置名字显示
+    top.setLocationShow = function(name) {
+       $("#locationName").text(name);
     }
 
 

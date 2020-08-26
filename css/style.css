@@ -196,7 +196,7 @@ ul,li{list-style: none;}
     text-align: left
 }
 
-.icon-01 {
+.icon-1 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -208,7 +208,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-02 {
+.icon-2 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -222,7 +222,7 @@ ul,li{list-style: none;}
 
 
 
-.icon-03 {
+.icon-3 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -234,7 +234,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-04 {
+.icon-4 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -246,7 +246,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-05 {
+.icon-5 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -258,7 +258,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-06 {
+.icon-6 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -270,7 +270,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-07 {
+.icon-7 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -282,7 +282,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-08 {
+.icon-8 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -294,7 +294,7 @@ ul,li{list-style: none;}
 	color: #fff;
 }
 
-.icon-09 {
+.icon-9 {
 	width: 30px;
     height: 30px;
     position: absolute;
@@ -470,6 +470,30 @@ ul,li{list-style: none;}
 	background: #fff;
 }
 
+.switch-lock{
+	position: fixed;
+	right: 50px;
+	bottom: 200px;
+	background: url(../image/icon-lock.png) no-repeat;
+	background-size:100%  100%;
+	width: 48px;
+	height: 48px;
+	border: none;
+	cursor: pointer;
+}
+
+.switch-open{
+	position: fixed;
+	right: 45px;
+	bottom: 200px;
+	background: url(../image/icon-open.png) no-repeat;
+	background-size:100%  100%;
+	width: 48px;
+	height: 48px;
+	border: none;
+	cursor: pointer;
+}
+
 .table th, .table td {  
 text-align: center;  
 vertical-align: middle!important;  
@@ -511,6 +535,8 @@ vertical-align: middle!important;
 	font-size: 10px;
 	z-index: 999;
 }
+
+
 #rotate{
 	top:20px;
 	right:80px;
@@ -523,5 +549,23 @@ vertical-align: middle!important;
 	content: '';
 	width: 36px;
 	height: 36px;
+	display: block;
+	margin-left: 3px;
+}
+
+
+#extention {
+	top:20px;
+	right:20px;
+	cursor: pointer;
+	display: none;
+}
+
+#extention:before{
+	background-image: url('../image/extention.png');
+	content: '';
+	width: 36px;
+	height: 36px;
+	margin-left: 5px;
 	display: block;
 }
