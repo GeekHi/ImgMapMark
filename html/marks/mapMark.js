@@ -195,6 +195,11 @@ layui.use(['tree', 'layer', 'form'], function () {
                             queryLocationInfo();
                         }
                     });
+                } else {
+                    layer.alert(result.resMsg, {
+                        icon: 5,
+                        title: "提示"
+                    });
                 }
             }
         })
@@ -220,6 +225,11 @@ layui.use(['tree', 'layer', 'form'], function () {
                     setTimeout(function() {
                         initMapState(result.obj);
                     }, 1000);
+                } else {
+                    layer.alert(result.resMsg, {
+                        icon: 5,
+                        title: "提示"
+                    });
                 }
             }
         })
@@ -249,26 +259,49 @@ layui.use(['tree', 'layer', 'form'], function () {
             , btnAlign: 'c' //按钮居中
             , yes: function () {
                 var validated = form.validForm("markCodeForm");
-                var assetsCode = $("#markCodeVal").val();
+                var assetsCode = $.trim($("#markCodeVal").val());
                 if (validated) {
                     $.ajax({
-                        url: "/gfdt/backstage/assets/isExist",
+                        url: "/gfdt/backstage/assets/find",
                         type: "post",
                         dataType: "json",
                         async: false,
+                        headers: {
+                            token: localStorage.gfToken,
+                            accountId: localStorage.gfaccountId
+                        },
                         data: {
                             assetsId:assetsCode
                         },
                         success: function (result) {
-                            if(result.obj==true){
-                                $("#markcode_" + id).text(assetsCode);
-                                $('#container').ZoomMark("setMarkCode", id, assetsCode);
-                                layer.closeAll();
-                            } else {
+                            if(result.obj==null){
                                 layer.alert("资产不存在！", {
                                     icon: 5,
                                     title: "提示"
                                 });
+                            } else {
+                                var color;
+                                // 在租
+                                if(result.obj.letStatus=="可用" && result.obj.leaseName != null){
+                                    color = "#f65732";
+                                }
+                                // 待租
+                                else if(result.obj.letStatus=="可用" && result.obj.leaseName == null){
+                                    color = "#2ad63e";
+                                }
+                                // 可用
+                                else if(result.obj.status=="可用"){
+                                    color = "#000";
+                                }
+                                // 不可用/ 不可租
+                                else if(result.obj.status=="不可用" || result.obj.letStatus=="不可用" ){
+                                    color = "#3b32f6";
+                                }
+
+                                $("#markcode_" + id).text(assetsCode);
+                                $("#markcode_" + id).css("color",color);
+                                $('#container').ZoomMark("setMarkCode", id,assetsCode);
+                                layer.closeAll();
                             }
                         }
                     })

@@ -61,8 +61,10 @@ layui.use(['form', 'table'], function () {
     function remderTable(tdata){
         loadTable = table.render({
             elem: "#mapTable",
-            limit:10,
+            limit:30,
+            limits:[30,40,50],
             page:true,
+            height:400,
             cols: myTableCols,
             data:tdata
         });

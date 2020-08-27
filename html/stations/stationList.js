@@ -29,6 +29,9 @@ layui.use(['form', 'table'], function () {
         page: true,
         url: "/gfdt/backstage/station/findByPage",
         method: 'post',
+        limit:50,
+        limits:[50,100,150],
+        height:400,
         request: {
             pageName: 'pageNum', //页码的参数名称
             limitName: 'pageSize'//每页数据量的参数名

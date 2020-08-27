@@ -15,7 +15,7 @@
   <div class="markNav">
     <ul class="layui-nav">
       <li class="nav-title"><a href="./menu.html">广佛地铁附属资源资产管理系统</a></li>
-      <li class="nav-title"><a id="locationName" style="font-size: 18px;">广佛线 - 沥滘站 - 站厅</a></li>
+      <li class="nav-title"><a id="locationName" style="font-size: 18px;"></a></li>
       <li class="layui-nav-item">
         <a href="javascript:;"><img src="../image/userIcon.png" class="layui-nav-img"><span
             id="userNameShow"></span></a>
@@ -90,7 +90,6 @@
             var formData = layui.form.val("pwdResetForm");
             formData.loginName = userName;
             resetPwd(formData);
-            layer.closeAll();
           }
         }
       });
@@ -122,9 +121,14 @@
         data: parm,
         success: function (result) {
           if (result.res == 1) {
+            layer.closeAll();
             layer.msg("密码修改成功！");
+          } else {
+            layer.alert(result.resMsg, {
+                icon: 5,
+                title: "提示"
+            });
           }
-          // location.href = "./login.html"
         }
       })
 
@@ -135,7 +139,6 @@
     top.setLocationShow = function(name) {
        $("#locationName").text(name);
     }
-
 
   });
 
