@@ -15,6 +15,9 @@
       body{
           height: 100%;
       }
+      .layui-form-label{
+          width: 60px;
+      }
 
     </style>
 </head>
@@ -25,7 +28,7 @@
             <div class="layui-form-item" style="text-align: right;">
                 <div class="layui-inline">
                     <label class="layui-form-label">资产用途</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <select name="category" lay-filter="useFor">
                             <option value="">全部</option>
                             <option value="1">商业</option>
@@ -35,8 +38,18 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <select name="status" lay-filter="userState">
+                            <option value="">全部</option>
+                            <option value="可用">可用</option>
+                            <option value="不可用">不可用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-label">资产类型</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <select name="assetsType" lay-filter="assetType">
                             <!-- 灯箱类、梯牌类、 门架类、 商铺、自助设备、写字楼、 车位、公寓 、电视机 -->
                             <option value="">全部</option>

@@ -7,6 +7,11 @@ layui.use(['form', 'table'], function () {
     // 表头实例
     var myTableCols;
 
+    var screenHeight= window.screen.height;
+
+    var autoHeight = parseInt(screenHeight * 0.6 ); 
+
+
     myTableCols = [[ //表头
         { field: 'stationName', title: '站台名称' }
         , { field: 'type1', title: '12封灯箱' }
@@ -64,7 +69,7 @@ layui.use(['form', 'table'], function () {
             limit:30,
             limits:[30,40,50],
             page:true,
-            height:400,
+            height:autoHeight,
             cols: myTableCols,
             data:tdata
         });

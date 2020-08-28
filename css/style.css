@@ -192,8 +192,9 @@ ul,li{list-style: none;}
     top: -20px;
     color: #000;
     left: 0;
-    width: 90px;
-    text-align: left
+	width: 90px;
+	font-size: 12px;
+    text-align: left;
 }
 
 .icon-1 {

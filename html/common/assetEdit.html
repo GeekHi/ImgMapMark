@@ -80,6 +80,8 @@
             </select>
           </div>
         </div>
+      </div>
+      <div class="layui-form-item layui-row">
         <div class="layui-col-xs6">
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
@@ -88,6 +90,12 @@
               </select>
           </div>
         </div>
+        <div class="layui-col-xs6">
+            <label class="layui-form-label">开通时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="beginDate" autocomplete="off" placeholder="选择开通时间" class="layui-input" id="startDate">
+            </div>
+          </div>
       </div>
       <div class="layui-form-item layui-row">
           <div class="layui-col-xs6">
@@ -116,9 +124,13 @@
                 </div>
             </div>
             <div class="layui-col-xs6">
-                <label class="layui-form-label">开通时间</label>
+                <label class="layui-form-label">位置</label>
                 <div class="layui-input-block">
-                    <input type="text" name="beginDate" autocomplete="off" placeholder="选择开通时间" class="layui-input" id="startDate">
+                  <select name="location">
+                    <option value="站厅">站厅</option>
+                    <option value="站台">站台</option>
+                    <option value="通道">通道</option>
+                  </select>
                 </div>
               </div>
           </div>
@@ -170,12 +182,21 @@
             </div>
           </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">使用状态</label>
-            <div class="layui-input-block">
-              <input type="radio" name="letStatus" value="可用" title="可用" checked>
-              <input type="radio" name="letStatus" value="不可用" title="不可用" >
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">使用状态</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="letStatus" value="可用" title="可用" checked>
+                  <input type="radio" name="letStatus" value="不可用" title="不可用" >
+                </div>
             </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">位置</label>
+                <div class="layui-input-block">
+                    <input type="text" name="location" required lay-verify="required" placeholder="请输入位置信息" autocomplete="off"
+                    class="layui-input">
+                </div>
+              </div>
           </div>
           <div class="layui-form-item layui-row" >
                  <div class="layui-col-xs6">
@@ -227,12 +248,21 @@
             </div>
           </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">使用状态</label>
-            <div class="layui-input-block">
-              <input type="radio" name="status" value="可用" title="可用" checked>
-              <input type="radio" name="status" value="不可用" title="不可用" >
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">使用状态</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="letStatus" value="可用" title="可用" checked>
+                  <input type="radio" name="letStatus" value="不可用" title="不可用" >
+                </div>
             </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label">位置</label>
+                <div class="layui-input-block">
+                    <input type="text" name="location" required lay-verify="required" placeholder="请输入位置信息" autocomplete="off"
+                    class="layui-input">
+                </div>
+              </div>
           </div>
 </script>
 

@@ -7,6 +7,10 @@ layui.use(['form', 'table'], function () {
     // 表头实例
     var myTableCols;
 
+    var screenHeight= window.screen.height;
+
+    var autoHeight = parseInt(screenHeight * 0.6 ); 
+
     myTableCols = [[ //表头
         { field: 'lineName', title: '线路名称' }
         , { field: 'stationName', title: '站点名称' }
@@ -31,7 +35,7 @@ layui.use(['form', 'table'], function () {
         method: 'post',
         limit:50,
         limits:[50,100,150],
-        height:400,
+        height:autoHeight,
         request: {
             pageName: 'pageNum', //页码的参数名称
             limitName: 'pageSize'//每页数据量的参数名

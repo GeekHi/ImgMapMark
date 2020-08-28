@@ -9,12 +9,6 @@ layui.use(['tree', 'layer', 'form'], function () {
     var stationId;
     
 
-
-    // 添加完标记回调
-    function addRowToTabel(marks) {
-
-    }
-
     // 拖拽id
     $(".showMark").mousedown(function () {
         var oId = $(this).data("id");
@@ -37,9 +31,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     // 初始化底图状态
     function initMapState(data) {
 
-        $('#container').ZoomMark({
-            'afterMark': addRowToTabel
-        });
+        $('#container').ZoomMark({});
 
         if (data.markList.length > 0) {
             // 缩放底图
@@ -138,7 +130,15 @@ layui.use(['tree', 'layer', 'form'], function () {
         postData.markList =[];
         $.each(markData.mMarks,function(index,item){
              if(item.available){
-                postData.markList.push(item);
+                 var flag = false;
+                 $.each(postData.markList,function(i,subItem){
+                      if(subItem.x==item.x && subItem.y==item.y){
+                          flag = true;
+                      }
+                 })
+                if(!flag){
+                    postData.markList.push(item);
+                }
              }
         })
         $.ajax({

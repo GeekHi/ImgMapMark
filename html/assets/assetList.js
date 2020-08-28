@@ -9,6 +9,11 @@ layui.use(['form', 'table'], function () {
     var adInstance;  // 广告表实例
     var comuInstance; //通信表实例    
 
+    var screenHeight= window.screen.height;
+
+    var autoHeight = parseInt(screenHeight * 0.6 ); 
+
+
     var Use_type = "";
 
     // 资产类型枚举映射
@@ -74,6 +79,7 @@ layui.use(['form', 'table'], function () {
                 return d.station || "--";
             }
         }
+        , { field: 'location', title: '位置'}
         , {
             title: '行政区域', width: 180, templet: function (d) {
                 return d.prov + d.city + d.area;
@@ -116,6 +122,7 @@ layui.use(['form', 'table'], function () {
         { field: 'physicsLine', title: '物理线路', width: 90 }
         , { field: 'segmentLine', title: '分段线路', width: 120 }
         , { field: 'station', title: '站点', width: 90 }
+        , { field: 'location', title: '位置' }
         , {
             title: '行政区域', width: 200, templet: function (d) {
                 return d.prov + d.city + d.area;
@@ -133,6 +140,7 @@ layui.use(['form', 'table'], function () {
         }
         , { field: 'assetsId', title: '资产编号', width: 120 }
         , { field: 'status', title: '使用状态', width: 90 }
+        
         , { field: 'beginDate', title: '开通时间', width: 120 }
         , { field: 'remark', title: '备注' }
         , {
@@ -151,6 +159,7 @@ layui.use(['form', 'table'], function () {
                 return d.prov + d.city + d.area;
             }
         }
+        , { field: 'location', title: '位置' }
         , {
             title: '资产类型', width: 120, templet: function (d) {
                 return assetsTypeEnumMap[d.assetsType] || ''
@@ -186,6 +195,7 @@ layui.use(['form', 'table'], function () {
         }
         , { field: 'status', title: '使用状态', width: 90 }
         , { field: 'unit', title: '计量单位', width: 90 }
+        , { field: 'location', title: '位置' }
         , { field: 'remark', title: '备注' }
         , {
             title: '操作',  fixed: 'right', width: 150, templet: function (d) {
@@ -207,7 +217,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:400,
+            height:autoHeight,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -239,7 +249,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:400,
+            height:autoHeight,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -275,7 +285,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:400,
+            height:autoHeight,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
@@ -310,7 +320,7 @@ layui.use(['form', 'table'], function () {
             method: 'post',
             limit:50,
             limits:[50,100,200,500,1000,1500],
-            height:400,
+            height:autoHeight,
             headers: {
                 token: localStorage.gfToken,
                 accountId: localStorage.gfaccountId
