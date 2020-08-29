@@ -7,7 +7,34 @@ layui.use(['tree', 'layer', 'form'], function () {
     var locationId;
 
     var stationId;
+
+    // 动态计算底图画布宽度
+    var screenWidth = window.screen.width;
+    var autoWidth = screenWidth - 410;
+
+    var maxWith = screenWidth - 280;
     
+
+    $("#container").css("width", autoWidth);
+
+    
+    // 展开收起iconList
+    $("#iconListHandleBtn").click(function(){
+        // 收起
+        if($(this).hasClass("menu-packUp")){
+            $(this).removeClass("menu-packUp").addClass("menu-spread");
+            $("#iconUl").hide();
+            $("#iconList").css("width","40px");
+            $("#container").css("width", maxWith);
+        }
+        // 展开
+        else if($(this).hasClass("menu-spread")){
+            $(this).removeClass("menu-spread").addClass("menu-packUp");
+            $("#iconUl").show();
+            $("#iconList").css("width","170px");
+            $("#container").css("width", autoWidth);
+        }
+    })
 
     // 拖拽id
     $(".showMark").mousedown(function () {
@@ -53,8 +80,6 @@ layui.use(['tree', 'layer', 'form'], function () {
             $('#container').ZoomMark('reset'); 
             $('#container').ZoomMark('setMarkList', []);
         }
-
-
         // 重置状态锁
         $("#lockBtn").removeClass("switch-open").addClass("switch-lock");
         $('#container').ZoomMark("switchState",false); 

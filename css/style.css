@@ -139,7 +139,31 @@ ul,li{list-style: none;}
 	display: table-cell;
 	background: #fff;
 	border-radius: 10px;
+	position: relative;
 }
+
+.panel  #iconList .menu-packUp{
+   position: absolute;
+   width: 30px;
+   height: 30px;
+   background: url(../image/packUp.png) no-repeat;
+   background-size: 100% 100%;
+   cursor: pointer;
+   right: 3px;
+   top: 250px;
+}
+
+.panel  #iconList .menu-spread{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background: url(../image/spread.png) no-repeat;
+	background-size: 100% 100%;
+	cursor: pointer;
+	right: 3px;
+	top: 250px;
+}
+
 
 .panel #iconList ul .showMark {
 	text-align: left;
