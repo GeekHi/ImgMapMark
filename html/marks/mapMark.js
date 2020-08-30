@@ -12,7 +12,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     var screenWidth = window.screen.width;
     var autoWidth = screenWidth - 410;
 
-    var maxWith = screenWidth - 280;
+    var maxWith = screenWidth - 70;
     
 
     $("#container").css("width", autoWidth);
@@ -24,6 +24,7 @@ layui.use(['tree', 'layer', 'form'], function () {
         if($(this).hasClass("menu-packUp")){
             $(this).removeClass("menu-packUp").addClass("menu-spread");
             $("#iconUl").hide();
+            $("#treeBox").hide();
             $("#iconList").css("width","40px");
             $("#container").css("width", maxWith);
         }
@@ -31,6 +32,7 @@ layui.use(['tree', 'layer', 'form'], function () {
         else if($(this).hasClass("menu-spread")){
             $(this).removeClass("menu-spread").addClass("menu-packUp");
             $("#iconUl").show();
+            $("#treeBox").show();
             $("#iconList").css("width","170px");
             $("#container").css("width", autoWidth);
         }
