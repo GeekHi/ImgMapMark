@@ -107,6 +107,19 @@
         },
         success: function (result) {
           location.href = "./login.html"
+        },
+        error: function (result) {
+          if (result.status == 401) {
+            layer.alert("登录过期，请重新登录！", {
+              icon: 5,
+              title: "提示"
+            });
+          } else {
+            layer.alert("系统错误，请联系管理员！", {
+              icon: 5,
+              title: "提示"
+            });
+          }
         }
       })
 
@@ -125,8 +138,21 @@
             layer.msg("密码修改成功！");
           } else {
             layer.alert(result.resMsg, {
-                icon: 5,
-                title: "提示"
+              icon: 5,
+              title: "提示"
+            });
+          }
+        },
+        error: function (result) {
+          if (result.status == 401) {
+            layer.alert("登录过期，请重新登录！", {
+              icon: 5,
+              title: "提示"
+            });
+          } else {
+            layer.alert("系统错误，请联系管理员！", {
+              icon: 5,
+              title: "提示"
             });
           }
         }
@@ -136,8 +162,8 @@
 
 
     // 设置名字显示
-    top.setLocationShow = function(name) {
-       $("#locationName").text(name);
+    top.setLocationShow = function (name) {
+      $("#locationName").text(name);
     }
 
   });

@@ -132,6 +132,19 @@ layui.use(['form', 'table'], function () {
                                 layer.msg("删除成功！");
                                 loadTable.reload({});
                             }
+                        },
+                        error: function (result) {
+                            if (result.status == 401) {
+                                layer.alert("登录过期，请重新登录！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            } else {
+                                layer.alert("系统错误，请联系管理员！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            }
                         }
                     })
                 }

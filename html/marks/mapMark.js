@@ -11,29 +11,31 @@ layui.use(['tree', 'layer', 'form'], function () {
     // 动态计算底图画布宽度
     var screenWidth = window.screen.width;
     var autoWidth = screenWidth - 410;
+    var assetsNameId; // 资产名称标号
 
     var maxWith = screenWidth - 70;
-    
+
+    var findStationName;
 
     $("#container").css("width", autoWidth);
 
-    
+
     // 展开收起iconList
-    $("#iconListHandleBtn").click(function(){
+    $("#iconListHandleBtn").click(function () {
         // 收起
-        if($(this).hasClass("menu-packUp")){
+        if ($(this).hasClass("menu-packUp")) {
             $(this).removeClass("menu-packUp").addClass("menu-spread");
             $("#iconUl").hide();
             $("#treeBox").hide();
-            $("#iconList").css("width","40px");
+            $("#iconList").css("width", "40px");
             $("#container").css("width", maxWith);
         }
         // 展开
-        else if($(this).hasClass("menu-spread")){
+        else if ($(this).hasClass("menu-spread")) {
             $(this).removeClass("menu-spread").addClass("menu-packUp");
             $("#iconUl").show();
             $("#treeBox").show();
-            $("#iconList").css("width","170px");
+            $("#iconList").css("width", "170px");
             $("#container").css("width", autoWidth);
         }
     })
@@ -41,6 +43,7 @@ layui.use(['tree', 'layer', 'form'], function () {
     // 拖拽id
     $(".showMark").mousedown(function () {
         var oId = $(this).data("id");
+        assetsNameId = oId;
         if (oId < 10) {
             oId = "0" + oId;
         }
@@ -79,12 +82,12 @@ layui.use(['tree', 'layer', 'form'], function () {
             // 校准
             initZoom(1);
         } else {
-            $('#container').ZoomMark('reset'); 
+            $('#container').ZoomMark('reset');
             $('#container').ZoomMark('setMarkList', []);
         }
         // 重置状态锁
         $("#lockBtn").removeClass("switch-open").addClass("switch-lock");
-        $('#container').ZoomMark("switchState",false); 
+        $('#container').ZoomMark("switchState", false);
 
     }
 
@@ -123,19 +126,19 @@ layui.use(['tree', 'layer', 'form'], function () {
         if (rId != 'temp') {
             var deg = eval("get" + $("#mark_" + rId).css("transform"));
             var nextDeg = (deg + step) % 360;
-            $('#container').ZoomMark("setMarkRotate", rId, nextDeg); 
+            $('#container').ZoomMark("setMarkRotate", rId, nextDeg);
             $("#mark_" + rId).css({ 'transform': 'rotate(' + nextDeg + 'deg)' });
         }
     })
 
     // 拉长
-    $("#extention").click(function(){
+    $("#extention").click(function () {
         var rId = $('#container').ZoomMark("getRotateId");
         if (rId != 'temp') {
             var offWidth = $("#mark_" + rId).width();
             offWidth = Number(offWidth) + 15;
-            $("#mark_" + rId).css("width",offWidth);
-            $('#container').ZoomMark("setMarkWidth", rId, offWidth);  
+            $("#mark_" + rId).css("width", offWidth);
+            $('#container').ZoomMark("setMarkWidth", rId, offWidth);
         }
     })
 
@@ -145,28 +148,28 @@ layui.use(['tree', 'layer', 'form'], function () {
         var markData = getZoomMarkData();
         var postData = {
             id: locationId,
-            stationName:stationId,
+            stationName: stationId,
             url: $("#locationImg").attr("src"),
             height: markData.imgPosition.height,
             rotate: markData.imgPosition.rotate,
-            scale:  markData.imgPosition.scale,
-            width:  markData.imgPosition.width,
+            scale: markData.imgPosition.scale,
+            width: markData.imgPosition.width,
             x: markData.imgPosition.x,
             y: markData.imgPosition.y
         };
-        postData.markList =[];
-        $.each(markData.mMarks,function(index,item){
-             if(item.available){
-                 var flag = false;
-                 $.each(postData.markList,function(i,subItem){
-                      if(subItem.x==item.x && subItem.y==item.y){
-                          flag = true;
-                      }
-                 })
-                if(!flag){
+        postData.markList = [];
+        $.each(markData.mMarks, function (index, item) {
+            if (item.available) {
+                var flag = false;
+                $.each(postData.markList, function (i, subItem) {
+                    if (subItem.x == item.x && subItem.y == item.y) {
+                        flag = true;
+                    }
+                })
+                if (!flag) {
                     postData.markList.push(item);
                 }
-             }
+            }
         })
         $.ajax({
             url: "/gfdt/backstage/station/update",
@@ -179,6 +182,19 @@ layui.use(['tree', 'layer', 'form'], function () {
                     layer.msg("保存成功！");
                 } else {
                     layer.alert("保存失败！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            },
+            error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                } else {
+                    layer.alert("系统错误，请联系管理员！", {
                         icon: 5,
                         title: "提示"
                     });
@@ -213,10 +229,10 @@ layui.use(['tree', 'layer', 'form'], function () {
                         , click: function (obj) {
                             $(".layui-tree-set").removeClass("active");
                             $(obj.elem).addClass("active");
-                            layer.load(2, {  
-                                shade: [0.3, 'gray'], 
+                            layer.load(2, {
+                                shade: [0.3, 'gray'],
                                 content: '加载中...',
-                                time:1000
+                                time: 1000
                             });
                             locationId = obj.data.id;
                             queryLocationInfo();
@@ -224,6 +240,19 @@ layui.use(['tree', 'layer', 'form'], function () {
                     });
                 } else {
                     layer.alert(result.resMsg, {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            },
+            error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                } else {
+                    layer.alert("系统错误，请联系管理员！", {
                         icon: 5,
                         title: "提示"
                     });
@@ -245,15 +274,29 @@ layui.use(['tree', 'layer', 'form'], function () {
             },
             success: function (result) {
                 if (result.res == 1) {
-                    top.setLocationShow(result.obj.lineName+" - " + result.obj.stationName + " - " + result.obj.location)
+                    findStationName = result.obj.stationName;
+                    top.setLocationShow(result.obj.lineName + " - " + result.obj.stationName + " - " + result.obj.location)
                     $("#locationImg").attr("src", result.obj.url);
                     stationId = result.obj.stationId;
                     // 等底图替换加载完成再初始化否则无法自动获取宽
-                    setTimeout(function() {
+                    setTimeout(function () {
                         initMapState(result.obj);
                     }, 1000);
                 } else {
                     layer.alert(result.resMsg, {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            },
+            error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                } else {
+                    layer.alert("系统错误，请联系管理员！", {
                         icon: 5,
                         title: "提示"
                     });
@@ -298,10 +341,10 @@ layui.use(['tree', 'layer', 'form'], function () {
                             accountId: localStorage.gfaccountId
                         },
                         data: {
-                            assetsId:assetsCode
+                            assetsId: assetsCode
                         },
                         success: function (result) {
-                            if(result.obj==null){
+                            if (result.obj == null) {
                                 layer.alert("资产不存在！", {
                                     icon: 5,
                                     title: "提示"
@@ -309,48 +352,153 @@ layui.use(['tree', 'layer', 'form'], function () {
                             } else {
                                 var color;
                                 // 在租
-                                if(result.obj.letStatus=="可用" && result.obj.leaseName != null){
+                                if (result.obj.letStatus == "可用" && result.obj.leaseName != null) {
                                     color = "#f65732";
                                 }
                                 // 待租
-                                else if(result.obj.letStatus=="可用" && result.obj.leaseName == null){
+                                else if (result.obj.letStatus == "可用" && result.obj.leaseName == null) {
                                     color = "#2ad63e";
                                 }
                                 // 可用
-                                else if(result.obj.status=="可用"){
+                                else if (result.obj.status == "可用") {
                                     color = "#000";
                                 }
                                 // 不可用/ 不可租
-                                else if(result.obj.status=="不可用" || result.obj.letStatus=="不可用" ){
+                                else if (result.obj.status == "不可用" || result.obj.letStatus == "不可用") {
                                     color = "#3b32f6";
                                 }
 
                                 $("#markcode_" + id).text(assetsCode);
-                                $("#markcode_" + id).css("color",color);
-                                $('#container').ZoomMark("setMarkCode", id,assetsCode);
+                                $("#markcode_" + id).css("color", color);
+                                $('#container').ZoomMark("setMarkCode", id, assetsCode);
                                 layer.closeAll();
+                            }
+                        },
+                        error:function(result){
+                            if(result.status==401){
+                                layer.alert("登录过期，请重新登录！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            } else {
+                                layer.alert("系统错误，请联系管理员！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
                             }
                         }
                     })
                 }
             },
-            cancel: function(index, layero){ 
-                $('#container').ZoomMark("deleteMark", id);  
-                return true; 
+            cancel: function (index, layero) {
+                $('#container').ZoomMark("deleteMark", id);
+                return true;
+            }
+        });
+    }
+
+    // 选择资产标号
+    top.showMarkCodeSelect = function (id) {
+        layer.open({
+            type: 2,
+            area: ['850px', '560px'],
+            offset: 't',
+            title: "资产选择",
+            content: '../common/assetSelect.html?stationName=' + findStationName +'&assetsName='+ assetsNameId
+            , btn: ['确定']
+            , btnAlign: 'c' //按钮居中
+            , yes: function () {
+                var data = top.getChooseAsset().data;
+                if (data.length > 0) {
+                    // 修改标记状态为已标记 
+                    setMarkFlag(data,id);
+                } else {
+                    layer.alert("请选择标记资产！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+
+            }
+            , cancel: function (index, layero) {
+                $('#container').ZoomMark("deleteMark", id);
+                return true;
             }
         });
     }
 
     // 开关
-    $("#lockBtn").click(function(){
-         if($(this).hasClass("switch-lock")){
+    $("#lockBtn").click(function () {
+        if ($(this).hasClass("switch-lock")) {
             $(this).removeClass("switch-lock").addClass("switch-open");
-            $('#container').ZoomMark("switchState",true);    
-         } else {
+            $('#container').ZoomMark("switchState", true);
+        } else {
             $(this).removeClass("switch-open").addClass("switch-lock");
-            $('#container').ZoomMark("switchState",false); 
-         }
+            $('#container').ZoomMark("switchState", false);
+        }
     })
 
+    // 展示标记
+    function showMarkObj(data,id){
+        var color;
+        // 在租
+        if (data[0].letStatus == "可用" && data[0].leaseName != null) {
+            color = "#f65732";
+        }
+        // 待租
+        else if (data[0].letStatus == "可用" && data[0].leaseName == null) {
+            color = "#2ad63e";
+        }
+        // 可用
+        else if (data[0].status == "可用") {
+            color = "#000";
+        }
+        // 不可用/ 不可租
+        else if (data[0].status == "不可用" || data[0].letStatus == "不可用") {
+            color = "#3b32f6";
+        }
+
+        $("#markcode_" + id).text(data[0].assetsId);
+        $("#markcode_" + id).css("color", color);
+        $('#container').ZoomMark("setMarkCode", id, data[0].assetsId);
+        layer.closeAll();       
+    }
+
+    // 设置标记标识
+    function setMarkFlag(markInfo,id) {
+        $.ajax({
+            url: "/gfdt/backstage/assets/updateMarkFlag?assetsId="+markInfo[0].assetsId,
+            type: "get",
+            data:"json",
+            headers: {
+                token: localStorage.gfToken,
+                accountId: localStorage.gfaccountId
+            },
+            success: function (res) {
+                var result = JSON.parse(res);
+                if(result.res==1){
+                    showMarkObj(markInfo,id);
+                } else {
+                    layer.alert("资产状态更新失败！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            },
+            error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                } else {
+                    layer.alert("系统错误，请联系管理员！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
+        })
+    }
 
 });

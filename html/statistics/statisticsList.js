@@ -1,15 +1,23 @@
-layui.use(['form', 'table'], function () {
+//配置插件目录
+layui.config({
+    base: '../../mods/'
+    , version: '1.0'
+});
+layui.use(['form', 'layer', 'layarea','table'], function () {
     var form = layui.form,
         $ = layui.$,
         layer = layui.layer,
+        layarea = layui.layarea,
         table = layui.table;
 
     // 表头实例
     var myTableCols;
 
-    var screenHeight= window.screen.height;
+    var screenHeight = window.screen.height;
 
-    var autoHeight = parseInt(screenHeight * 0.6 ); 
+    var autoHeight = parseInt(screenHeight * 0.6);
+
+    var tableInstance;
 
 
     myTableCols = [[ //表头
@@ -21,65 +29,76 @@ layui.use(['form', 'table'], function () {
         , { field: 'type5', title: '超级灯箱', width: 120 }
         , { field: 'type6', title: '梯楣灯箱', width: 120 }
         , { field: 'type7', title: '龙门架', width: 200 }
-        , { field: 'total', title: '总计', width: 120}
+        , { field: 'total', title: '总计', width: 120 }
     ]]
 
-    queryTableData();
-
-    // 查询表格数据
-    function queryTableData(){
-        $.ajax({
-            url: "/gfdt/backstage/report/getReport",
-            type: "post",
-            dataType: "json",
-            async: false,
-            data:{
-                stationName:$("#stationName").val()
-            },
-            success: function (result) {
-                if (result.res == 1) {
-                   remderTable(result.obj);
-                } else {
-                    remderTable([]);
-                }
-            }
-        })
-    }
-
     // 导出文件
-    function exportListFile(){
+    function exportListFile() {
         var elemIF = document.createElement("iframe");
         elemIF.src = "/gfdt/backstage/report/exportExecl";
         elemIF.style.display = "none";
         document.body.appendChild(elemIF);
     }
-    
+
 
 
     // 导出文件
-    $("#exportBtn").click(function(){
+    $("#exportBtn").click(function () {
         exportListFile();
     })
 
+    remderTable();
 
 
-    function remderTable(tdata){
-        loadTable = table.render({
+
+    function remderTable() {
+        tableInstance = table.render({
             elem: "#mapTable",
-            limit:30,
-            limits:[30,40,50],
-            page:true,
-            height:autoHeight,
+            url: "/gfdt/backstage/report/getReport",
+            method: 'post',
             cols: myTableCols,
-            data:tdata
+            limit: 100,
+            limits: [100, 200, 500, 1000, 1500],
+            height: autoHeight,
+            where:{
+                stationName: $("#stationName").val()
+            },
+            headers: {
+                token: localStorage.gfToken,
+                accountId: localStorage.gfaccountId
+            },
+            request: {
+                pageName: 'pageNum', //页码的参数名称
+                limitName: 'pageSize'//每页数据量的参数名
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "count": res.obj ? res.obj.length : 0, //解析数据长度
+                    "data": res.obj ? res.obj : [], //解析数据列表
+                    "code": res.res == 1 ? 0 : res.code
+                };
+            },
+            page: true
         });
     }
 
 
     // 点击搜索
-    $("#searchBtn").click(function(){
-        queryTableData();
+    $("#searchBtn").click(function () {
+        tableInstance.reload({  
+            where:{
+                stationName: $("#stationName").val()
+            },
+        })
     })
 
+    layarea.render({
+        elem: '#reginpicker',
+        data:{
+            province: '广东省',
+            city: '',
+            county: ''
+        }
+    });
 
 });

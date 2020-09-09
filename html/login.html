@@ -78,14 +78,27 @@
                             localStorage.gfaccountId = result.obj.accountId;
                             location.href = "./menu.html";
                         }
+                    },
+                    error: function (result) {
+                        if (result.status == 401) {
+                            layer.alert("登录过期，请重新登录！", {
+                                icon: 5,
+                                title: "提示"
+                            });
+                        } else {
+                            layer.alert("系统错误，请联系管理员！", {
+                                icon: 5,
+                                title: "提示"
+                            });
+                        }
                     }
                 })
             }
         })
 
         // 回车登录
-        $("#LAY-user-login-password").keyup(function(event){
-            if(event.keyCode ==13){
+        $("#LAY-user-login-password").keyup(function (event) {
+            if (event.keyCode == 13) {
                 $("#loginSubmit").click();
             }
         })

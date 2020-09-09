@@ -14,7 +14,7 @@
     <form class="layui-form" lay-filter="assetsEditForm">
       <div class="layui-form-item layui-row">
         <div class="layui-col-xs6">
-          <label class="layui-form-label">资产用途</label>
+          <label class="layui-form-label">资产分类</label>
           <div class="layui-input-block">
             <select name="assetsCategory" lay-filter="useOptions">
               <option value="1">商业</option>
@@ -26,7 +26,7 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">资产编号</label>
           <div class="layui-input-block">
-            <input type="text" name="assetsId"  lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
+            <input type="text" name="assetsId" lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
               class="layui-input">
           </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">媒体名称</label>
           <div class="layui-input-block">
-            <select name="assetsName">
+            <select name="assetsName" lay-filter="assetsName">
               <option value="1">十二封灯箱</option>
               <option value="2">街区图（十二封）</option>
               <option value="3">资讯、导向</option>
@@ -80,8 +80,25 @@
             </select>
           </div>
         </div>
+        <div class="layui-col-xs6" style="display:none;" id="tpNumInput">
+          <label class="layui-form-label">数量</label>
+          <div class="layui-input-block">
+            <input type="text" id="tpNum" name="tpNum"  lay-verify="number" placeholder="请输入梯牌数量" autocomplete="off"
+            class="layui-input">
+          </div>
+        </div>
       </div>
       <div class="layui-form-item layui-row">
+         <div class="layui-col-xs6">
+          <label class="layui-form-label">资产用途</label>
+          <div class="layui-input-block">
+              <select name="assetsPurpose">
+                  <option value="商业资源">商业资源</option>
+                  <option value="运营资源">运营资源</option>
+                  <option value="导向资源">导向资源</option>
+                </select>
+          </div>
+        </div>
         <div class="layui-col-xs6">
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
@@ -90,12 +107,6 @@
               </select>
           </div>
         </div>
-        <div class="layui-col-xs6">
-            <label class="layui-form-label">开通时间</label>
-            <div class="layui-input-block">
-                <input type="text" name="beginDate" autocomplete="off" placeholder="选择开通时间" class="layui-input" id="startDate">
-            </div>
-          </div>
       </div>
       <div class="layui-form-item layui-row">
           <div class="layui-col-xs6">
@@ -117,22 +128,30 @@
         </div>
         <div class="layui-form-item layui-row">
             <div class="layui-col-xs6">
+                <label class="layui-form-label">开通时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="beginDate" autocomplete="off" placeholder="选择开通时间" class="layui-input" id="startDate">
+                </div>
+              </div>
+            <div class="layui-col-xs6">
                 <label class="layui-form-label">使用状态</label>
                 <div class="layui-input-block">
                   <input type="radio" name="status" value="可用" title="可用" checked>
                   <input type="radio" name="status" value="不可用" title="不可用" >
                 </div>
             </div>
-            <div class="layui-col-xs6">
-                <label class="layui-form-label">位置</label>
-                <div class="layui-input-block">
-                  <select name="location">
-                    <option value="站厅">站厅</option>
-                    <option value="站台">站台</option>
-                    <option value="通道">通道</option>
-                  </select>
+          </div>
+          <div class="layui-form-item layui-row">
+              <div class="layui-col-xs6">
+                  <label class="layui-form-label">位置</label>
+                  <div class="layui-input-block">
+                    <select name="location">
+                      <option value="站厅">站厅</option>
+                      <option value="站台">站台</option>
+                      <option value="通道">通道</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
           </div>
 </script>
 
@@ -159,6 +178,7 @@
           <label class="layui-form-label">物理线路</label>
           <div class="layui-input-block">
               <select name="physicsLine">
+                  <option value=""></option>
                   <option value="广佛线">广佛线</option>
                 </select>
           </div>
@@ -169,6 +189,7 @@
             <label class="layui-form-label">分段线路</label>
             <div class="layui-input-block">
               <select name="segmentLine">
+                <option value=""></option>
                 <option value="广佛线二期">广佛线二期</option>
                 <option value="广佛线后通段">广佛线后通段</option>
                 <option value="广佛线首通段">广佛线首通段</option>
@@ -183,21 +204,17 @@
           </div>
         </div>
         <div class="layui-form-item layui-row">
-            <div class="layui-col-xs6">
+            <div class="layui-col-xs10">
                 <label class="layui-form-label">使用状态</label>
                 <div class="layui-input-block">
                   <input type="radio" name="letStatus" value="可用" title="可用" checked>
                   <input type="radio" name="letStatus" value="不可用" title="不可用" >
+                  <input type="radio" name="letStatus" value="在租" title="在租" >
+                  <input type="radio" name="letStatus" value="待租" title="待租" >
                 </div>
             </div>
-            <div class="layui-col-xs6">
-                <label class="layui-form-label">位置</label>
-                <div class="layui-input-block">
-                    <input type="text" name="location" required lay-verify="required" placeholder="请输入位置信息" autocomplete="off"
-                    class="layui-input">
-                </div>
-              </div>
           </div>
+
           <div class="layui-form-item layui-row" >
                  <div class="layui-col-xs6">
                     <label class="layui-form-label">承租方名称</label>
@@ -207,12 +224,24 @@
                     </div>
                  </div>
                  <div class="layui-col-xs6">
+                    <label class="layui-form-label"><a style="color:#1E9FFF;cursor:pointer;display:none;" id="historyView">承租记录</a></label>
+                 </div>
+            </div>
+            <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
                     <label class="layui-form-label">开始出租</label>
                     <div class="layui-input-block">
                         <input type="text" name="beginDate" placeholder="出租开始日期" autocomplete="off" class="layui-input" id="startDate">
                     </div>
                   </div>
-            </div>
+                  <div class="layui-col-xs6">
+                      <label class="layui-form-label">位置</label>
+                      <div class="layui-input-block">
+                          <input type="text" name="location" required lay-verify="required" placeholder="请输入位置信息" autocomplete="off"
+                          class="layui-input">
+                      </div>
+                    </div>
+              </div>
           <div class="layui-form-item layui-row">
                 <div class="layui-col-xs6">
                     <label class="layui-form-label">出租结束</label>
@@ -268,26 +297,8 @@
 
 
   <script src="../../layui.js"></script>
+  <script src="../../lib/utils.js"></script>
   <script>
-
-    // 工具方法
-    function getQueryString(name) {
-      var getParam = function (keyname) {
-        var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
-        var r = decodeURIComponent(window.location.search).substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-      }
-      if (typeof name == 'string') return getParam(name);
-      else {
-        var result = {};
-        for (var i = 0; i < name.length; i++) {
-          var keyName = name[i];
-          result[keyName] = getParam(keyName);
-        }
-        return result;
-      }
-    }
 
     //配置插件目录
     layui.config({
@@ -317,18 +328,18 @@
       function initPage() {
         // 默认编辑商业类型
         $("#formItemContain").html($("#commercialForm").html());
-         queryStationOpts();
-         initStationOpts();
-         initDate();
+        queryStationOpts();
+        initStationOpts();
+        initDate();
         if (editFlag == 2) {
           queryAssetDetail();
         } else {
           layarea.render({
             elem: '#area-picker',
-            data:{
-                province: "广东省",
-                city:"广州市",
-                county: "荔湾区"
+            data: {
+              province: "广东省",
+              city: "广州市",
+              county: "荔湾区"
             }
           });
         }
@@ -343,6 +354,22 @@
           layui.form.val("assetsEditForm", formInitObj);
           form.render();
         }
+
+        // 点击查看历史出租信息
+        $("#historyView").click(function () {
+          top.layer.open({
+            type: 2,
+            area: ['850px', '560px'],
+            title: "租赁记录",
+            content: './common/leaseHistory.html?assetsId=' + formInitObj.assetsId
+            , btn: ['确定']
+            , btnAlign: 'c' //按钮居中
+            , yes: function () {
+              top.layer.closeAll();
+            }
+          });
+        })
+
       }
 
       // 查询资产详情
@@ -361,19 +388,31 @@
           },
           success: function (result) {
             if (result.res == 1) {
-                formInitObj = result.obj;
-                Use_Type = formInitObj.assetsCategory;
-                handleFormItem();
-                layarea.render({
-                  elem: '#area-picker',
-                  data:{
-                      province: formInitObj.prov,
-                      city:formInitObj.city,
-                      county: formInitObj.area
-                  }
-                });
+              formInitObj = result.obj;
+              Use_Type = formInitObj.assetsCategory;
+              handleFormItem();
+              // 梯牌需要展示数量
+              if (formInitObj.assetsName == 7) {
+                $("#tpNumInput").show();
+              }
+              layarea.render({
+                elem: '#area-picker',
+                data: {
+                  province: formInitObj.prov,
+                  city: formInitObj.city,
+                  county: formInitObj.area
+                }
+              });
             }
-          }
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
         })
       }
 
@@ -391,13 +430,22 @@
             if (result.res == 1) {
               stationOptsObj = result.obj;
             }
-          }
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
         })
       }
 
       //初始化站点下拉列表
       function initStationOpts() {
         var tempArr = [];
+        tempArr.push('<option value=""></option>');
         $.each(stationOptsObj, function (index, item) {
           tempArr.push('<option value="' + item.paramName + '">' + item.paramName + '</option>')
         })
@@ -411,8 +459,17 @@
         handleFormItem();
       })
 
+      form.on("select(assetsName)", function (data) {
+        // 梯牌类的要填写数量
+        if (data.value == 7) {
+          $("#tpNumInput").show();
+        } else {
+          $("#tpNumInput").hide();
+        }
+      })
+
       // 动态表单切换
-      function handleFormItem(){
+      function handleFormItem() {
         switch (Use_Type) {
           case '1':
             $("#formItemContain").html($("#commercialForm").html());
@@ -427,6 +484,7 @@
             formInit();
             break;
         }
+        formInitObj && formInitObj.leaseName ? $("#historyView").show() : $("#historyView").hide();
       }
 
       // 初始化时间组件
@@ -451,8 +509,8 @@
 
         var validate = form.validForm("assetsEditForm");
 
-        if(!validate){
-          return 
+        if (!validate) {
+          return
         }
 
         // 保存商业
@@ -497,7 +555,7 @@
               "10":"看板"
         */
 
-        if (parmData.assetsName == "1" || parmData.assetsName == "2" || parmData.assetsName == "3" || parmData.assetsName == "4" || parmData.assetsName == "5"|| parmData.assetsName == "8"|| parmData.assetsName == "9") {
+        if (parmData.assetsName == "1" || parmData.assetsName == "2" || parmData.assetsName == "3" || parmData.assetsName == "4" || parmData.assetsName == "5" || parmData.assetsName == "8" || parmData.assetsName == "9") {
           parmData.assetsType = "1";
         }
 
@@ -509,6 +567,7 @@
 
         if (parmData.assetsName == "7") {
           parmData.assetsType = "2";
+          delete parmData.tpNum;
         }
         if (parmData.assetsName == "10") {
           parmData.assetsType = "3";
@@ -541,7 +600,15 @@
             } else {
               top.onSavefail(result);
             }
-          }
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
         })
       }
 
@@ -588,6 +655,12 @@
         if (editFlag == 2) {
           parmData.id = editId;
           url = "/gfdt/backstage/assets/updateBusinessAssets";
+          // 租赁公司变更，添加到记录
+          if (formInitObj.leaseName != parmData.leaseName) {
+            addLeaseRecord(parmData);
+          }
+        } else {
+          addLeaseRecord(parmData);
         }
         $.ajax({
           url: url,
@@ -606,7 +679,15 @@
             } else {
               top.onSavefail(result);
             }
-          }
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
         })
       }
 
@@ -635,9 +716,44 @@
             } else {
               top.onSavefail(result);
             }
-          }
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
         })
 
+      }
+
+      // 添加租赁记录
+      function addLeaseRecord(data) {
+        $.ajax({
+          url: "/gfdt/backstage/assets/insertAssetsLease",
+          type: "post",
+          contentType: "application/json; charset=utf-8",
+          headers: {
+            token: localStorage.gfToken,
+            accountId: localStorage.gfaccountId
+          },
+          dataType: "json",
+          async: false,
+          data: JSON.stringify(data),
+          success: function (result) {
+             console.log(result);
+          },
+          error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
+        })
       }
 
     });

@@ -35,7 +35,7 @@
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">备注</label>
-                <div class="label-show"  id="remark"></div>
+                <div class="label-show" id="remark"></div>
             </div>
 
         </form>
@@ -48,30 +48,38 @@
           <label class="layui-form-label">媒体名称</label>
           <div class="label-show">{{assetsNameEnumMap[d.assetsName]}}</div>
         </div>
-        <div class="layui-col-xs6">
-          <label class="layui-form-label">物理线路</label>
-          <div class="label-show">{{d.physicsLine}}</div>
-        </div>
+        {{# if(d.tpNum) { }}
+        <div class="layui-col-xs6" >
+                <label class="layui-form-label">数量</label>
+                <div class="label-show">{{d.tpNum}}</div>
+              </div>
+        {{# } }}
       </div>
       <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
+                    <label class="layui-form-label">物理线路</label>
+                    <div class="label-show">{{d.physicsLine}}</div>
+                  </div>
           <div class="layui-col-xs6">
             <label class="layui-form-label">分段线路</label>
             <div class="label-show">{{d.segmentLine}}</div>
           </div>
-          <div class="layui-col-xs6">
-            <label class="layui-form-label">站点</label>
-            <div class="label-show">{{d.station}}</div>
-          </div>
         </div>
         <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
+                        <label class="layui-form-label">站点</label>
+                        <div class="label-show">{{d.station || "--"}}</div>
+                      </div>
             <div class="layui-col-xs6">
                 <label class="layui-form-label">使用状态</label>
                 <div class="label-show">{{d.status}}</div>
             </div>
-            <div class="layui-col-xs6">
-                <label class="layui-form-label">开通时间</label>
-                <div class="label-show">{{d.beginDate || "--" }}</div>
-              </div>
+          </div>
+          <div class="layui-form-item layui-row">
+                <div class="layui-col-xs6">
+                        <label class="layui-form-label">开通时间</label>
+                        <div class="label-show">{{d.beginDate || "--" }}</div>
+                      </div>
           </div>
 </script>
 
@@ -145,46 +153,46 @@
 
     <script src="../../layui.js"></script>
     <script>
-                    // 资产类型枚举映射
-                    var assetsTypeEnumMap = {
-                "1": "灯箱类",
-                "2": "梯牌类",
-                "3": "门架类",
-                "4": "商铺",
-                "5": "自助设备",
-                "6": "写字楼",
-                "7": "车位",
-                "8": "公寓",
-                "9": "电视机",
-                "999": "通信设备"
-            }
+        // 资产类型枚举映射
+        var assetsTypeEnumMap = {
+            "1": "灯箱类",
+            "2": "梯牌类",
+            "3": "门架类",
+            "4": "商铺",
+            "5": "自助设备",
+            "6": "写字楼",
+            "7": "车位",
+            "8": "公寓",
+            "9": "电视机",
+            "999": "通信设备"
+        }
 
-            // 用途枚举映射
-            var userTypeEnumMap = {
-                "1": "商业",
-                "2": "广告",
-                "3": "通信"
-            }
+        // 用途枚举映射
+        var userTypeEnumMap = {
+            "1": "商业",
+            "2": "广告",
+            "3": "通信"
+        }
 
-            // 资产名称映射
-            var assetsNameEnumMap = {
-                "1": "十二封灯箱",
-                "2": "街区图（十二封）",
-                "3": "资讯、导向",
-                "4": "超级灯箱",
-                "5": "梯眉灯箱",
-                "6": "电视机",
-                "7": "梯牌",
-                "20": "商铺",
-                "21": "自助售卖机",
-                "22": "自助照相机",
-                "23": "自助雨伞",
-                "24": "自助售卡机",
-                "25": "自助充值机",
-                "26": "写字楼",
-                "27": "车位",
-                "28": "公寓"
-            }
+        // 资产名称映射
+        var assetsNameEnumMap = {
+            "1": "十二封灯箱",
+            "2": "街区图（十二封）",
+            "3": "资讯、导向",
+            "4": "超级灯箱",
+            "5": "梯眉灯箱",
+            "6": "电视机",
+            "7": "梯牌",
+            "20": "商铺",
+            "21": "自助售卖机",
+            "22": "自助照相机",
+            "23": "自助雨伞",
+            "24": "自助售卡机",
+            "25": "自助充值机",
+            "26": "写字楼",
+            "27": "车位",
+            "28": "公寓"
+        }
 
 
         // 工具方法
@@ -211,9 +219,9 @@
             base: '../../mods/'
             , version: '1.0'
         });
-        layui.use(['layer' ,'laytpl'], function () {
+        layui.use(['layer', 'laytpl'], function () {
             var layer = layui.layer
-                ,laytpl = layui.laytpl
+                , laytpl = layui.laytpl
                 , $ = layui.$;
 
             //  资产ID
@@ -239,24 +247,32 @@
                         if (result.res == 1) {
                             renderShowTemplate(result.obj);
                         }
+                    },
+                    error: function (result) {
+                        if (result.status == 401) {
+                            layer.alert("登录过期，请重新登录！", {
+                                icon: 5,
+                                title: "提示"
+                            });
+                        }
                     }
                 })
             }
 
             // 展示表单赋值
             function renderShowTemplate(formData) {
-                var scriptHtml, formHtml; 
+                var scriptHtml, formHtml;
                 $("#assetsCategory").text(userTypeEnumMap[formData.assetsCategory]);
                 $("#assetsId").text(formData.assetsId);
                 $("#regin").text(formData.prov + formData.city + formData.area);
-                $("#remark").text(formData.remark || "--"  );
-                if(formData.assetsCategory==1){
+                $("#remark").text(formData.remark || "--");
+                if (formData.assetsCategory == 1) {
                     scriptHtml = $("#commercialForm").html();
                 }
-                if(formData.assetsCategory==2){
+                if (formData.assetsCategory == 2) {
                     scriptHtml = $("#advertisingForm").html();
                 }
-                if(formData.assetsCategory==3){
+                if (formData.assetsCategory == 3) {
                     scriptHtml = $("#communicationForm").html();
                 }
                 formHtml = laytpl(scriptHtml).render(formData);

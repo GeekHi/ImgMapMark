@@ -99,8 +99,7 @@
             <label class="layui-form-label"></label>
             <div class="layui-input-block">
                 <div class="label-show">
-                    <a style="color: #1E9FFF;cursor: pointer;display: none;" 
-                        id="imgDownload">查看底图</a>
+                    <a style="color: #1E9FFF;cursor: pointer;display: none;" id="imgDownload">查看底图</a>
                     <span style="color: red;" id="unloadTip">底图未上传</span>
                 </div>
             </div>
@@ -164,6 +163,14 @@
                         form.render();
                         initPage();
                     }
+                },
+                error: function (result) {
+                    if (result.status == 401) {
+                        layer.alert("登录过期，请重新登录！", {
+                            icon: 5,
+                            title: "提示"
+                        });
+                    }
                 }
             })
 
@@ -197,15 +204,23 @@
                                     }
                                 });
                             }
+                        },
+                        error: function (result) {
+                            if (result.status == 401) {
+                                layer.alert("登录过期，请重新登录！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            }
                         }
                     })
                 } else {
                     layarea.render({
                         elem: '#reginpicker',
-                        data:{
-                                province: "广东省",
-                                city:"广州市",
-                                county: "荔湾区"
+                        data: {
+                            province: "广东省",
+                            city: "广州市",
+                            county: "荔湾区"
                         }
                     });
                 }
@@ -249,7 +264,7 @@
             }
 
             // 点击下载;
-            $("#imgDownload").click(function(){
+            $("#imgDownload").click(function () {
                 layer.closeAll();
                 window.open($("#imgUrl").val())
             })
@@ -274,6 +289,14 @@
                             } else {
                                 top.onSavefail(res);
                             }
+                        },
+                        error: function (result) {
+                            if (result.status == 401) {
+                                layer.alert("登录过期，请重新登录！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
+                            }
                         }
                     })
                 }
@@ -290,6 +313,14 @@
                                 top.onSaveSuccess();
                             } else {
                                 top.onSavefail(res);
+                            }
+                        },
+                        error: function (result) {
+                            if (result.status == 401) {
+                                layer.alert("登录过期，请重新登录！", {
+                                    icon: 5,
+                                    title: "提示"
+                                });
                             }
                         }
                     })

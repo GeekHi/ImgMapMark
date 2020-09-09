@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资产选择</title>
+    <link rel="stylesheet" href="../../css/layui.css">
+</head>
+
+<body>
+    <div style="padding: 10px;">
+        <div id="mytable"></div>
+    </div>
+
+    <script src="../../layui.js"></script>
+    <script>
+        layui.use(['table'], function () {
+            var table = layui.table,
+                $ = layui.$;
+
+            // 工具方法
+            function getQueryString(name) {
+                var getParam = function (keyname) {
+                    var reg = new RegExp("(^|&)" + keyname + "=([^&]*)(&|$)", "i");
+                    var r = decodeURIComponent(window.location.search).substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+                if (typeof name == 'string') return getParam(name);
+                else {
+                    var result = {};
+                    for (var i = 0; i < name.length; i++) {
+                        var keyName = name[i];
+                        result[keyName] = getParam(keyName);
+                    }
+                    return result;
+                }
+            }
+
+            var aid = getQueryString("assetsId");
+
+
+            var tableCols = [[
+                { field: 'leaseName', title: '承租方名称' }
+                , { field: 'beginDate', title: '开始出租' }
+                , { field: 'endDate', title: '出租结束' }
+                , { field: 'deliveryDate', title: '交铺日期' }
+            ]];
+
+
+            renderTable();
+
+            // 渲染表格
+            function renderTable() {
+
+
+                table.render({
+                    elem: "#mytable",
+                    cols: tableCols,
+                    page: false,
+                    url: "/gfdt/backstage/assets/findAssetsLease",
+                    method: 'get',
+                    limit: 50,
+                    limits: [50, 100, 200, 500, 1000, 1500],
+                    height: 400,
+                    headers: {
+                        token: localStorage.gfToken,
+                        accountId: localStorage.gfaccountId
+                    },
+                    where: {
+                        assetsId: aid
+                    },
+                    request: {
+                        pageName: 'pageNum', //页码的参数名称
+                        limitName: 'pageSize'//每页数据量的参数名
+                    },
+                    parseData: function (res) { //res 即为原始返回的数据
+                        return {
+                            "count": res.obj ? res.obj.length : 0, //解析数据长度
+                            "data": res.obj ? res.obj : [], //解析数据列表
+                            "code": res.res == 1 ? 0 : res.code
+                        };
+                    }
+                });
+            }
+
+
+        })    
+    </script>
+</body>
+
+</html>
