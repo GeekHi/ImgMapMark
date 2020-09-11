@@ -320,83 +320,6 @@ layui.use(['tree', 'layer', 'form'], function () {
         });
     }
 
-    // 展示资产输入input 
-    top.showMarkCodeInput = function (id) {
-        layer.open({
-            type: 1,
-            content: $("#markCodeForm").html()
-            , btn: ['保存']
-            , btnAlign: 'c' //按钮居中
-            , yes: function () {
-                var validated = form.validForm("markCodeForm");
-                var assetsCode = $.trim($("#markCodeVal").val());
-                if (validated) {
-                    $.ajax({
-                        url: "/gfdt/backstage/assets/find",
-                        type: "post",
-                        dataType: "json",
-                        async: false,
-                        headers: {
-                            token: localStorage.gfToken,
-                            accountId: localStorage.gfaccountId
-                        },
-                        data: {
-                            assetsId: assetsCode
-                        },
-                        success: function (result) {
-                            if (result.obj == null) {
-                                layer.alert("资产不存在！", {
-                                    icon: 5,
-                                    title: "提示"
-                                });
-                            } else {
-                                var color;
-                                // 在租
-                                if (result.obj.letStatus == "可用" && result.obj.leaseName != null) {
-                                    color = "#f65732";
-                                }
-                                // 待租
-                                else if (result.obj.letStatus == "可用" && result.obj.leaseName == null) {
-                                    color = "#2ad63e";
-                                }
-                                // 可用
-                                else if (result.obj.status == "可用") {
-                                    color = "#000";
-                                }
-                                // 不可用/ 不可租
-                                else if (result.obj.status == "不可用" || result.obj.letStatus == "不可用") {
-                                    color = "#3b32f6";
-                                }
-
-                                $("#markcode_" + id).text(assetsCode);
-                                $("#markcode_" + id).css("color", color);
-                                $('#container').ZoomMark("setMarkCode", id, assetsCode);
-                                layer.closeAll();
-                            }
-                        },
-                        error:function(result){
-                            if(result.status==401){
-                                layer.alert("登录过期，请重新登录！", {
-                                    icon: 5,
-                                    title: "提示"
-                                });
-                            } else {
-                                layer.alert("系统错误，请联系管理员！", {
-                                    icon: 5,
-                                    title: "提示"
-                                });
-                            }
-                        }
-                    })
-                }
-            },
-            cancel: function (index, layero) {
-                $('#container').ZoomMark("deleteMark", id);
-                return true;
-            }
-        });
-    }
-
     // 选择资产标号
     top.showMarkCodeSelect = function (id) {
         layer.open({
@@ -427,6 +350,42 @@ layui.use(['tree', 'layer', 'form'], function () {
         });
     }
 
+    // 删除标记资产
+    top.deleteMarkAsset = function(obj){
+        $.ajax({
+            url: "/gfdt/backstage/assets/deleteMarklist",
+            type: "get",
+            dataType: "json",
+            async: false,
+            data: {
+                assetsId:obj.aid
+            },
+            success: function (result) {
+                if (result.res == 1) {
+                    $('#container').ZoomMark("deleteMark", obj.mid);
+                } else {
+                    layer.alert(result.resMsg, {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            },
+            error:function(result){
+                if(result.status==401){
+                    layer.alert("登录过期，请重新登录！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                } else {
+                    layer.alert("系统错误，请联系管理员！", {
+                        icon: 5,
+                        title: "提示"
+                    });
+                }
+            }
+        })
+    }
+
     // 开关
     $("#lockBtn").click(function () {
         if ($(this).hasClass("switch-lock")) {
@@ -442,11 +401,11 @@ layui.use(['tree', 'layer', 'form'], function () {
     function showMarkObj(data,id){
         var color;
         // 在租
-        if (data[0].letStatus == "可用" && data[0].leaseName != null) {
+        if (data[0].status == "在租" ) {
             color = "#f65732";
         }
         // 待租
-        else if (data[0].letStatus == "可用" && data[0].leaseName == null) {
+        else if (data[0].status == "待租" ) {
             color = "#2ad63e";
         }
         // 可用
@@ -454,7 +413,7 @@ layui.use(['tree', 'layer', 'form'], function () {
             color = "#000";
         }
         // 不可用/ 不可租
-        else if (data[0].status == "不可用" || data[0].letStatus == "不可用") {
+        else if (data[0].status == "不可用") {
             color = "#3b32f6";
         }
 

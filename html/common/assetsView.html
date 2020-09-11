@@ -20,7 +20,7 @@
         <form class="layui-form" lay-filter="assetsEditForm">
             <div class="layui-form-item layui-row">
                 <div class="layui-col-xs6">
-                    <label class="layui-form-label">资产用途</label>
+                    <label class="layui-form-label">资产分类</label>
                     <div class="label-show" id="assetsCategory"></div>
                 </div>
                 <div class="layui-col-xs6">
@@ -80,6 +80,10 @@
                         <label class="layui-form-label">开通时间</label>
                         <div class="label-show">{{d.beginDate || "--" }}</div>
                       </div>
+                      <div class="layui-col-xs6">
+                        <label class="layui-form-label">资产用途</label>
+                        <div class="label-show">{{d.assetsPurpose || "--" }}</div>
+                      </div>
           </div>
 </script>
 
@@ -98,16 +102,21 @@
       <div class="layui-form-item layui-row">
           <div class="layui-col-xs6">
             <label class="layui-form-label">分段线路</label>
-            <div class="label-show">{{d.segmentLine}}</div>
+            <div class="label-show">{{d.segmentLine || "--" }}</div>
           </div>
           <div class="layui-col-xs6">
             <label class="layui-form-label">站点</label>
-            <div class="label-show">{{d.station}}</div>
+            <div class="label-show">{{d.station || "--"}}</div>
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs6">
             <label class="layui-form-label">使用状态</label>
             <div class="label-show">{{d.letStatus}}</div>
+            </div>
+            <div class="layui-col-xs6">
+                <label class="layui-form-label"><a style="color:#1E9FFF;cursor:pointer;" id="historyView">承租记录</a></label>
+             </div>
           </div>
           <div class="layui-form-item layui-row" >
                  <div class="layui-col-xs6">
@@ -246,6 +255,11 @@
                     success: function (result) {
                         if (result.res == 1) {
                             renderShowTemplate(result.obj);
+                        } else {
+                            layer.alert(result.resMsg, {
+                                icon: 5,
+                                title: "提示"
+                            });
                         }
                     },
                     error: function (result) {
@@ -279,6 +293,20 @@
                 $("#formItemContain").html(formHtml);
             }
 
+        // 点击查看历史出租信息
+        $("#historyView").click(function () {
+          top.layer.open({
+            type: 2,
+            area: ['850px', '560px'],
+            title: "租赁记录",
+            content: './common/leaseHistory.html?assetsId=' + asset_id
+            , btn: ['确定']
+            , btnAlign: 'c' //按钮居中
+            , yes: function () {
+              top.layer.closeAll();
+            }
+          });
+        })
 
         });
     </script>

@@ -26,7 +26,7 @@
         <div class="layui-col-xs6">
           <label class="layui-form-label">资产编号</label>
           <div class="layui-input-block">
-            <input type="text" name="assetsId" lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
+            <input type="text" name="assetsId" id="AstId" lay-verify="required" placeholder="请输入资产编号" autocomplete="off"
               class="layui-input">
           </div>
         </div>
@@ -332,6 +332,7 @@
         initStationOpts();
         initDate();
         if (editFlag == 2) {
+          $("#AstId").attr("disabled","disabled").css("background","#eee");
           queryAssetDetail();
         } else {
           layarea.render({
